@@ -52,9 +52,9 @@ export default class VideoUtil extends cc.Component {
         cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
         if( !cc.sys.isNative){
             this.node.zIndex = 5;
-            // let gCanvas = document.getElementsByClassName('gameCanvas')[0];
-            // gCanvas.style.position = 'relative';
-            // gCanvas.style.zIndex = 10;
+            let gCanvas = document.getElementsByClassName('gameCanvas')[0];
+            gCanvas.style.position = 'relative';
+            gCanvas.style.zIndex = 10;
         }
         this.video_object = this.node.getComponent(cc.VideoPlayer);
         this.callback = null;
