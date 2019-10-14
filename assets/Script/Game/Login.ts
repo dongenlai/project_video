@@ -52,9 +52,9 @@ export default class Login extends cc.Component {
 
     onGoGame(){
         this.showPreLoadPanel(false);
+        console.log(this.videoScript + "---00--00-")
         this.videoScript.playVideo("video/part1/Start", null, function(videoObj){
             if (cc.isValid(videoObj)) {}
-
             console.log("视频播放完成！！！！！！！");
             this.touchText.active = true;
             this.touchText.runAction(cc.blink(1.5, 1).repeatForever());

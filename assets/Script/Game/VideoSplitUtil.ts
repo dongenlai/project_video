@@ -20,9 +20,9 @@ export default class VideoSplitUtil extends cc.Component {
 
         if( !cc.sys.isNative){
             this.node.zIndex = 5;
-            let gCanvas = document.getElementsByClassName('gameCanvas')[0];
-            gCanvas.style.position = 'relative';
-            gCanvas.style.zIndex = 10;
+            // let gCanvas = document.getElementsByClassName('gameCanvas')[0];
+            // gCanvas.style.position = 'relative';
+            // gCanvas.style.zIndex = 10;
         }
 
         this.videoPlayer_1 = video_1.getComponent(cc.VideoPlayer);
