@@ -1,15 +1,14 @@
+import BaseNode from "./BaseNode";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Load extends cc.Component {
+export default class Load extends BaseNode {
     @property({
         type:cc.ProgressBar
     })
     progressBar: cc.ProgressBar 
-
     //进度条进度
     private progress:number = 0;
-
     onLoad () {
         //加载视频资源
         cc.loader.loadRes("json/video_try_play", (err, jsonAsset)=>{

@@ -1,8 +1,9 @@
 import VideoUtil from "./VideoUtil";
+import BaseNode from "./BaseNode";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Login extends cc.Component {
+export default class Login extends BaseNode {
     @property(cc.Prefab)
     videoPrefab:cc.Prefab = null;
 
@@ -12,6 +13,40 @@ export default class Login extends cc.Component {
     preLoadGameBg: cc.Node = null;
 
     start () {
+        //调用基类start
+        super.start(["guestLogin", "wxLogin", "autoLogin"], this.onHttpEvent);
+    }
+
+    onHttpEvent(data:any){
+        const eventName = data.postEventName;
+        const retStr = cuckoo.PubUtil.string2Obj(data.retStr);
+        switch(eventName){
+            case "wxLogin":
+                this.onLoginSuccess(retStr);
+                break;
+            case "autoLogin":
+                this.onLoginSuccess(retStr);
+                break
+            case "guestLogin":
+                this.onLoginSuccess(retStr);
+                break
+            default:
+                console.log("event is not exit");
+                break    
+        }
+    }
+
+    private onLoginSuccess(json:any):void{
+        cuckoo.curUser.baseInfo.readFromJson(json);
+        const token = cuckoo.curUser.baseInfo.token;
+        //缓存token信息
+        if (token) 
+            cuckoo.curUser.token = token;
+
+        cuckoo.PubUtil.setLocalDataJson("localUser", { "token": token} );
+        //登陆成功
+        console.log("登陆返回数据" + JSON.stringify(json));
+        this.showPreLoadPanel(true);
     }
 
     onLoad(){
@@ -37,12 +72,24 @@ export default class Login extends cc.Component {
        }
     }
 
-    onWxClick(){
-        this.showPreLoadPanel(true)
+    private onWxClick():void{
+        cuckoo.Net.httpPostHs("/weChatLogin/v1", {}, {postEventName:"wxLogin", postEventNode:this.node});
     }
 
-    onYkClick(){
-        this.showPreLoadPanel(true)
+    private onYkClick():void{
+        const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
+        if (_locaData.token) {
+            cuckoo.curUser.token = _locaData.token;
+            this.onAutoLogin();
+        } else {
+           console.log("游客登陆！！")
+           cuckoo.Net.httpPostHs("/guestGenerateAndLogin/v1", {}, {postEventName:"guestLogin", postEventNode:this.node});
+        }
+    }
+
+    protected onAutoLogin():void{
+        console.log("自动登陆！！")
+        cuckoo.Net.httpPostHs("/guestGenerateAndLogin/v1", {}, {postEventName:"autoLogin", postEventNode:this.node});
     }
 
     showPreLoadPanel(state:boolean):void{
@@ -52,7 +99,6 @@ export default class Login extends cc.Component {
 
     onGoGame(){
         this.showPreLoadPanel(false);
-        console.log(this.videoScript + "---00--00-")
         this.videoScript.playVideo("video/part1/Start", null, function(videoObj){
             if (cc.isValid(videoObj)) {}
             console.log("视频播放完成！！！！！！！");
