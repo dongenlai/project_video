@@ -52,6 +52,7 @@ namespace cuckoo {
             // Simple events 'loadstart', 'abort', 'error', 'load', 'loadend', 'timeout'
             ['abort', 'error', 'timeout'].forEach(function (eventname) {
                 xhr["on" + eventname] = function () {
+                    console.log("Http::eventname: " + eventname);
                     Net.postEvent(eventInfo, 1, eventname, "");
                 }
             });
@@ -113,7 +114,6 @@ namespace cuckoo {
            const event = new cc.Event.EventCustom(postEventName, true);
            const userData = new HttpUserData(postEventName, xErrorCode, xErrorMsg, xRetStr);
            event.setUserData(userData); 
-
            postEventNode.dispatchEvent(event);
         }
       

@@ -1,5 +1,17 @@
 namespace cuckoo {
     export const PubUtil = {	
+        /*
+          通用弹框提示
+        */
+        createToast:function(node:cc.Node, str:string, callback?:Function){
+            let prefab = cc.instantiate(this.videoPrefab);
+            prefab.parent = node;
+
+            
+
+
+        },
+
          /**
          * serialize json object to string.
          * @param {Object} json

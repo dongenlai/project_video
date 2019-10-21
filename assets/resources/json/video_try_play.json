@@ -1,14 +1,6 @@
 {
     "part1": {
-        "Start": "video/part1/Start.mp4",
-        "Start1": "video/part1/Start1.mp4",
-        "UnLock_Fail": "video/part1/UnLock_Fail.mp4",
-        "UnLockS_ucess": "video/part1/UnLockS_ucess.mp4",
-        "unlocking": "video/part1/unlocking.mp4",
-        "Diving": "video/part1/Diving.mp4",
-        "AllPass": "video/part1/AllPass.mp4",
-        "H5Start": "video/part1/H5START.mp4",
-        "Trailer": "video/part1/Trailer.mp4"
+        "Start": "video/part1/cocosvideo.mp4"
     }
    
 }

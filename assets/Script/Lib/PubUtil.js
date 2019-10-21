@@ -1,6 +1,13 @@
 var cuckoo;
 (function (cuckoo) {
     cuckoo.PubUtil = {
+        /*
+          通用弹框提示
+        */
+        createToast: function (node, str, callback) {
+            var prefab = cc.instantiate(this.videoPrefab);
+            prefab.parent = node;
+        },
         /**
         * serialize json object to string.
         * @param {Object} json

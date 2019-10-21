@@ -10,7 +10,6 @@ export default class Login extends BaseNode {
     videoScript: VideoUtil = null;
     touchText: cc.Node = null;
     bg: cc.Node = null;
-    preLoadGameBg: cc.Node = null;
 
     start () {
         //调用基类start
@@ -19,6 +18,11 @@ export default class Login extends BaseNode {
 
     onHttpEvent(data:any){
         const eventName = data.postEventName;
+        const errorCode = data.errorCode;
+        if (errorCode != 0) {
+            this.showToast("登陆失败", 1);
+            return;
+        }
         const retStr = cuckoo.PubUtil.string2Obj(data.retStr);
         switch(eventName){
             case "wxLogin":
@@ -42,21 +46,20 @@ export default class Login extends BaseNode {
         //缓存token信息
         if (token) 
             cuckoo.curUser.token = token;
-
         cuckoo.PubUtil.setLocalDataJson("localUser", { "token": token} );
         //登陆成功
         console.log("登陆返回数据" + JSON.stringify(json));
-        this.showPreLoadPanel(true);
+        this.onGoGame();
     }
 
     onLoad(){
+        super.onLoad();
+
         this.bg = cc.find("bg", this.node); 
-        this.preLoadGameBg = cc.find("bg/preLoadGameBg", this.node);
-        const startLabel = cc.find("bg/preLoadGameBg/startLabel", this.node);
         //点击任意位置继续
         this.touchText = cc.find("touch_text", this.node); 
         //开始游戏按钮 
-        startLabel.on(cc.Node.EventType.TOUCH_END, this.onGoGame, this);
+        // startLabel.on(cc.Node.EventType.TOUCH_END, this.onGoGame, this);
         //视频组件相关
         let videoObject = cc.instantiate(this.videoPrefab);
         videoObject.parent = this.node;
@@ -73,7 +76,9 @@ export default class Login extends BaseNode {
     }
 
     private onWxClick():void{
-        cuckoo.Net.httpPostHs("/weChatLogin/v1", {}, {postEventName:"wxLogin", postEventNode:this.node});
+        cuckoo.WxInterFace.wXLogin(function(){
+           cuckoo.Net.httpPostHs("/weChatLogin/v1", {}, {postEventName:"wxLogin", postEventNode:this.node});
+        })
     }
 
     private onYkClick():void{
@@ -93,7 +98,6 @@ export default class Login extends BaseNode {
     }
 
     showPreLoadPanel(state:boolean):void{
-        this.preLoadGameBg.active = state
         this.bg.opacity = state ? 255 : 0;
     }
 

@@ -22,6 +22,13 @@ export default class Load extends BaseNode {
     }
 
     start () {
+        this.setWxInfo();
+    }
+
+    //设置微信相关信息
+    private setWxInfo():void{
+        cuckoo.WxInterFace.setAppID(cuckoo.GAME.cfg.wxAppId);
+        cuckoo.WxInterFace.sendAuthRequest();
     }
 
     private _progressCallback(completeCount, totalCount, res) {
@@ -30,9 +37,9 @@ export default class Load extends BaseNode {
     }
 
     private _completeCallback(err, texture){
-        console.log("进入登陆场景" + cc.loader.getRes("video/part1/AllPass"));
-        cc.director.loadScene("Login");
-    }
+        console.log("进入登陆场景" + cc.loader.getRes("video/part1/cocosvideo"));
+        cc.director.loadScene("Login"); 
+    }   
 
     private _updateProgressBar(){
         this.progressBar.progress = this.progress;

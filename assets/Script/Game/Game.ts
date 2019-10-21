@@ -194,7 +194,7 @@ export default class Game extends cc.Component {
         const tag = parseInt(customEventData);
         switch(tag){
             case 1:
-                this.playVideo("video/part1/H5START", 1);
+                this.playVideo("video/part1/Start", 1);
                 break;
             case 2:
                 break;
@@ -231,7 +231,7 @@ export default class Game extends cc.Component {
         this.lockPanel.active = false;
         const self = this;
         console.log("isSuccess = " + isSuccess);
-        this.videoScript.playVideo(isSuccess ? "video/part1/UnLockS_ucess" : "video/part1/UnLock_Fail", null, function(videoObj){
+        this.videoScript.playVideo(isSuccess ? "video/part1/Start" : "video/part1/Start", null, function(videoObj){
             if (cc.isValid(videoObj)) {
                 videoObj.active = false;
             }
@@ -268,7 +268,7 @@ export default class Game extends cc.Component {
         this.nexBtn.active = false;
         const self = this;
 
-        this.videoScript.playVideo("video/part1/unlocking", function(curTime, totalTime){
+        this.videoScript.playVideo("video/part1/Start", function(curTime, totalTime){
             var sub = curTime/totalTime;
             self.progressBar.progress = 1 - sub;  
         }, function(videoObj){
