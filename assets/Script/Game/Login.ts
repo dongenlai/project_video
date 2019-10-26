@@ -1,19 +1,33 @@
 import VideoUtil from "./VideoUtil";
+import Notice from "./Notice";
 import BaseNode from "./BaseNode";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Login extends BaseNode {
+    //视频组件
     @property(cc.Prefab)
     videoPrefab:cc.Prefab = null;
-
     videoScript: VideoUtil = null;
-    touchText: cc.Node = null;
+    //公告组件
+    @property(cc.Prefab)
+    noticePrefab:cc.Prefab = null;
+    noticeScript: Notice = null;
+
+    //背景
     bg: cc.Node = null;
+
+    touchText: cc.Node = null;
 
     start () {
         //调用基类start
-        super.start(["guestLogin", "wxLogin", "autoLogin"], this.onHttpEvent);
+        super.start(["guestLogin", "wxLogin", "autoLogin", "notice"], this.onHttpEvent);
+        this.doRequestNotice();
+    }
+
+    private doRequestNotice():void{
+        // this.noticeScript.showNotice();
+        cuckoo.Net.httpPostHs("/affiche/v1", {}, {postEventName:"notice", postEventNode:this.node});
     }
 
     onHttpEvent(data:any){
@@ -34,10 +48,16 @@ export default class Login extends BaseNode {
             case "guestLogin":
                 this.onLoginSuccess(retStr);
                 break
+            case "notice":
+                this.onNoticeSuccess(retStr);    
             default:
                 console.log("event is not exit");
                 break    
         }
+    }
+
+    private onNoticeSuccess(json:any):void{
+        console.log("----1111----" + JSON.stringify(json));
     }
 
     private onLoginSuccess(json:any):void{
@@ -54,17 +74,20 @@ export default class Login extends BaseNode {
 
     onLoad(){
         super.onLoad();
-
         this.bg = cc.find("bg", this.node); 
-        //点击任意位置继续
-        this.touchText = cc.find("touch_text", this.node); 
-        //开始游戏按钮 
-        // startLabel.on(cc.Node.EventType.TOUCH_END, this.onGoGame, this);
         //视频组件相关
         let videoObject = cc.instantiate(this.videoPrefab);
         videoObject.parent = this.node;
         const videoScript = videoObject.getComponent(VideoUtil)
         this.videoScript = videoScript
+
+        //公告组件相关
+        let noticePrefab = cc.instantiate(this.noticePrefab);
+        noticePrefab.parent = this.node;
+        this.noticeScript = noticePrefab.getComponent(Notice);
+
+        //点击任意位置继续
+        this.touchText = cc.find("touch_text", this.node); 
         //注册全局监听 
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
     }
@@ -76,9 +99,12 @@ export default class Login extends BaseNode {
     }
 
     private onWxClick():void{
-        cuckoo.WxInterFace.wXLogin(function(){
-           cuckoo.Net.httpPostHs("/weChatLogin/v1", {}, {postEventName:"wxLogin", postEventNode:this.node});
-        })
+        //微信登陆
+        console.log("微信登陆");
+        cuckoo.WxInterFace.sendAuthRequest();
+        // cuckoo.WxInterFace.wXLogin(function(){
+        //    cuckoo.Net.httpPostHs("/weChatLogin/v1", {}, {postEventName:"wxLogin", postEventNode:this.node});
+        // })
     }
 
     private onYkClick():void{

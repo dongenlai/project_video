@@ -1,7 +1,7 @@
 var cuckoo;
 (function (cuckoo) {
     cuckoo.WxInterFace = {
-        _className: "com/shared/xsdk/WXInterface",
+        _className: "com/shared/sdk/WXInterface",
         //静态（注意覆盖）
         _callFunc: null,
         sendAuthRequest: function () {
@@ -31,7 +31,7 @@ var cuckoo;
         //设置appid 
         setAppID: function (appid) {
             if (cc.sys.os == cc.sys.OS_ANDROID) {
-                console.log("设置appid");
+                console.log("设置appid" + appid);
                 jsb.reflection.callStaticMethod(this._className, "setWXAppIDByClient", "(Ljava/lang/String;)V", appid);
             }
             else if (cc.sys.os == cc.sys.OS_IOS) {

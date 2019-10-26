@@ -6,7 +6,11 @@ namespace cuckoo {
 
            //!!暂时写到这里 不安全
            //微信appid
-           wxAppId:"wx28cfba0b0d0f7cb9",
+        //    wxAppId:"wx28cfba0b0d0f7cb9",
+        //    wxAppId:"wxee37008ca721fedd",
+           wxAppId:"wxd930ea5d5a258f4f",
+
+        
            //微信appscript
            appSecret:"a224ffffe619eaadc388596ba54bfe1c"
         },

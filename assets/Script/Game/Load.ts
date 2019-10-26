@@ -28,7 +28,6 @@ export default class Load extends BaseNode {
     //设置微信相关信息
     private setWxInfo():void{
         cuckoo.WxInterFace.setAppID(cuckoo.GAME.cfg.wxAppId);
-        cuckoo.WxInterFace.sendAuthRequest();
     }
 
     private _progressCallback(completeCount, totalCount, res) {

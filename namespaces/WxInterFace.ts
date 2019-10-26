@@ -1,13 +1,13 @@
 namespace cuckoo {
     export const WxInterFace = {
-         _className:"com/shared/xsdk/WXInterface",
+         _className:"com/shared/sdk/WXInterface",
          //静态（注意覆盖）
          _callFunc:null, 
 
         sendAuthRequest:function(){
             if (cc.sys.os == cc.sys.OS_ANDROID) {
                 //参数回调函数 到java层eval 例如 
-                jsb.reflection.callStaticMethod(this._className, "sendAuthRequest", "(Ljava/lang/String;)V", "");
+                jsb.reflection.callStaticMethod(this._className, "sendAuthRequest", "(Ljava/lang/String;)V",  "");
             } else if (cc.sys.os == cc.sys.OS_IOS) {
             }
         },
@@ -33,7 +33,7 @@ namespace cuckoo {
         //设置appid 
         setAppID:function(appid:string){
             if (cc.sys.os == cc.sys.OS_ANDROID) {
-                console.log("设置appid");
+                console.log("设置appid" + appid);
                 jsb.reflection.callStaticMethod(this._className, "setWXAppIDByClient", "(Ljava/lang/String;)V", appid);
             } else if (cc.sys.os == cc.sys.OS_IOS) {
             }
