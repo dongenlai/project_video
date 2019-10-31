@@ -1,5 +1,11 @@
 var cuckoo;
 (function (cuckoo) {
+    var WXLOGIN_STATE;
+    (function (WXLOGIN_STATE) {
+        WXLOGIN_STATE[WXLOGIN_STATE["REFUSE"] = 0] = "REFUSE";
+        WXLOGIN_STATE[WXLOGIN_STATE["SUCCESS"] = 1] = "SUCCESS";
+        WXLOGIN_STATE[WXLOGIN_STATE["CANCEL"] = 2] = "CANCEL"; //取消
+    })(WXLOGIN_STATE || (WXLOGIN_STATE = {}));
     cuckoo.WxInterFace = {
         _className: "com/shared/sdk/WXInterface",
         //静态（注意覆盖）
@@ -15,17 +21,12 @@ var cuckoo;
         //微信登陆
         wXLogin: function (callBack) {
             this._callFunc = callBack;
-            if (cc.sys.os == cc.sys.OS_ANDROID) {
-                jsb.reflection.callStaticMethod(this._className, "sendWXLoginRequest", "(Ljava/lang/String;)V", "");
-            }
-            else if (cc.sys.os == cc.sys.OS_IOS) {
-            }
+            this.sendAuthRequest();
         },
         //微信登陆回调
         wXLoginRes: function (reCode, code, state) {
             if (this._callFunc && typeof this._callFunc === 'function') {
-                console.log("微信登陆成功了么？？？");
-                this._callFunc();
+                this._callFunc(reCode, code);
             }
         },
         //设置appid 

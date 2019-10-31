@@ -22,7 +22,7 @@ export default class Login extends BaseNode {
     start () {
         //调用基类start
         super.start(["guestLogin", "wxLogin", "autoLogin", "notice"], this.onHttpEvent);
-        this.doRequestNotice();
+        // this.doRequestNotice();
     }
 
     private doRequestNotice():void{
@@ -34,7 +34,7 @@ export default class Login extends BaseNode {
         const eventName = data.postEventName;
         const errorCode = data.errorCode;
         if (errorCode != 0) {
-            this.showToast("登陆失败", 1);
+            this.showToast("http数据接口访问出错" + "(" + eventName + ")", 2);
             return;
         }
         const retStr = cuckoo.PubUtil.string2Obj(data.retStr);
@@ -99,23 +99,26 @@ export default class Login extends BaseNode {
     }
 
     private onWxClick():void{
-        //微信登陆
-        console.log("微信登陆");
-        cuckoo.WxInterFace.sendAuthRequest();
-        // cuckoo.WxInterFace.wXLogin(function(){
-        //    cuckoo.Net.httpPostHs("/weChatLogin/v1", {}, {postEventName:"wxLogin", postEventNode:this.node});
-        // })
+        cuckoo.WxInterFace.wXLogin(function(retCode, code){
+            if (retCode == 0) {
+                const data = { code:code };
+                console.log("微信登陆成功"+ retCode + " code: " + code);
+                cuckoo.Net.httpPostHs("/weChatLogin/v1", data, {postEventName:"wxLogin", postEventNode:this.node});
+            }else if(retCode == 1) {
+            }else{
+            }
+        })
     }
 
     private onYkClick():void{
-        const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
-        if (_locaData.token) {
-            cuckoo.curUser.token = _locaData.token;
-            this.onAutoLogin();
-        } else {
+        // const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
+        // if (_locaData.token) {
+        //     cuckoo.curUser.token = _locaData.token;
+        //     this.onAutoLogin();
+        // } else {
            console.log("游客登陆！！")
            cuckoo.Net.httpPostHs("/guestGenerateAndLogin/v1", {}, {postEventName:"guestLogin", postEventNode:this.node});
-        }
+        // }
     }
 
     protected onAutoLogin():void{

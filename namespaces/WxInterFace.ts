@@ -1,4 +1,10 @@
 namespace cuckoo {
+
+    enum WXLOGIN_STATE {
+         "REFUSE" = 0,    //拒绝
+         "SUCCESS",       //成功
+         "CANCEL"         //取消
+    }
     export const WxInterFace = {
          _className:"com/shared/sdk/WXInterface",
          //静态（注意覆盖）
@@ -15,18 +21,13 @@ namespace cuckoo {
         //微信登陆
         wXLogin:function(callBack:Function){
             this._callFunc = callBack;
-            
-            if (cc.sys.os == cc.sys.OS_ANDROID) {
-                jsb.reflection.callStaticMethod(this._className, "sendWXLoginRequest", "(Ljava/lang/String;)V", "");
-            } else if (cc.sys.os == cc.sys.OS_IOS) {
-            }
+            this.sendAuthRequest();
         },
 
         //微信登陆回调
         wXLoginRes:function(reCode:number, code:any, state:any){
             if (this._callFunc && typeof this._callFunc === 'function' ){
-                console.log("微信登陆成功了么？？？");
-                this._callFunc()
+                this._callFunc(reCode, code)
             }
         },
 

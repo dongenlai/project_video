@@ -50,23 +50,33 @@ var cuckoo;
                 };
             });
             xhr.onreadystatechange = function () {
+                console.log("xhr.readyState: " + xhr.readyState + " xhr.status: " + xhr.status);
                 if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
                     var httpStatus = xhr.statusText;
                     var response = xhr.responseText;
-                    // var setCookie = xhr.getResponseHeader("Set-Cookie");
-                    // if(setCookie){
-                    //     var sliceIndex = setCookie.indexOf(";");
-                    //     setCookie = setCookie.substring(sliceIndex,0);
-                    //     Net.httpCookie = setCookie;
-                    // }
+                    if (cc.sys.isNative) {
+                        var setCookie = xhr.getResponseHeader("Set-Cookie");
+                        if (setCookie) {
+                            var sliceIndex = setCookie.indexOf(";");
+                            setCookie = setCookie.substring(sliceIndex, 0);
+                            Net.httpCookie = setCookie;
+                        }
+                    }
+                    else {
+                        Net.httpCookie = document.cookie;
+                    }
                     Net.postEvent(eventInfo, 0, httpStatus, response);
+                }
+                else if (xhr.readyState == 4 && xhr.status == 0) {
+                    Net.postEvent(eventInfo, 1, "onError", "");
                 }
             };
             // 10 seconds for timeout
             xhr.timeout = timeOut;
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            // xhr.setRequestHeader("Cookie", Net.httpCookie);
+            if (cc.sys.isNative)
+                xhr.setRequestHeader("Cookie", Net.httpCookie);
             for (var name in header) {
                 xhr.setRequestHeader(name, header[name]);
             }
@@ -81,6 +91,8 @@ var cuckoo;
                     else
                         sendData += cc.js.formatStr("&%s=%s", name, encodeURIComponent(postData[name]));
                 }
+                console.log("发送数据包" + sendData + "\n" + " 当前url: " + url);
+                console.log("请求头信息" + JSON.stringify(header));
                 xhr.send(sendData);
             }
         };
