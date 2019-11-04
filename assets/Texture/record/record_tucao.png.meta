@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.1",
+  "uuid": "916ae5c6-4f2a-4c0f-a986-11c1e56ccb94",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "record_tucao": {
+      "ver": "1.0.4",
+      "uuid": "83573fa1-a881-4f0e-84dc-0bbb8a4bbcad",
+      "rawTextureUuid": "916ae5c6-4f2a-4c0f-a986-11c1e56ccb94",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 141,
+      "height": 23,
+      "rawWidth": 141,
+      "rawHeight": 23,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

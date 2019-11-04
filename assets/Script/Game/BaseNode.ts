@@ -10,22 +10,28 @@ export default class BaseNode extends cc.Component {
     protected events:string[] = [];
     //弹框通用
     protected toast:cc.Node = null;
+    private curRunToast:cc.Node = null;
 
     protected onLoad():void{
         console.log("BaseNode super!!");
     }
 
     protected showToast(str:string, time:number = 2, callBack?:Function):void{
+        if (this.curRunToast) {
+            return;
+        }
         const toast = cc.instantiate(this.toastPrefab);
+        this.curRunToast = toast;
         toast.parent = this.node;
 
         const text = cc.find("text", toast); 
         if (text)
            text.getComponent(cc.Label).string = str || "";
 
-        const moveBy = cc.moveBy(time, cc.p(0, 200));
+        const moveBy = cc.moveBy(time, cc.p(0, 120));
         const finish = cc.callFunc(function(){
             toast.destroy();
+            this.curRunToast = null;
         }, this);
 
         toast.runAction(cc.sequence(moveBy, finish));

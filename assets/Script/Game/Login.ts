@@ -23,6 +23,7 @@ export default class Login extends BaseNode {
         //调用基类start
         super.start(["guestLogin", "wxLogin", "autoLogin", "notice"], this.onHttpEvent);
         // this.doRequestNotice();
+        cc.director.loadScene("Game");
     }
 
     private doRequestNotice():void{
@@ -34,7 +35,7 @@ export default class Login extends BaseNode {
         const eventName = data.postEventName;
         const errorCode = data.errorCode;
         if (errorCode != 0) {
-            this.showToast("http数据接口访问出错" + "(" + eventName + ")", 2);
+            this.showToast("http数据接口访问出错,eventName为" + "(" + eventName + ")", 5);
             return;
         }
         const retStr = cuckoo.PubUtil.string2Obj(data.retStr);
@@ -99,11 +100,12 @@ export default class Login extends BaseNode {
     }
 
     private onWxClick():void{
+        const self = this;
         cuckoo.WxInterFace.wXLogin(function(retCode, code){
             if (retCode == 0) {
                 const data = { code:code };
                 console.log("微信登陆成功"+ retCode + " code: " + code);
-                cuckoo.Net.httpPostHs("/weChatLogin/v1", data, {postEventName:"wxLogin", postEventNode:this.node});
+                cuckoo.Net.httpPostHs("/weChatLogin/v1", data, {postEventName:"wxLogin", postEventNode:self.node});
             }else if(retCode == 1) {
             }else{
             }
@@ -111,7 +113,7 @@ export default class Login extends BaseNode {
     }
 
     private onYkClick():void{
-        // const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
+        const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
         // if (_locaData.token) {
         //     cuckoo.curUser.token = _locaData.token;
         //     this.onAutoLogin();
@@ -132,11 +134,13 @@ export default class Login extends BaseNode {
 
     onGoGame(){
         this.showPreLoadPanel(false);
-        this.videoScript.playVideo("video/part1/Start", null, function(videoObj){
-            if (cc.isValid(videoObj)) {}
-            console.log("视频播放完成！！！！！！！");
-            this.touchText.active = true;
-            this.touchText.runAction(cc.blink(1.5, 1).repeatForever());
-        }.bind(this))
+        cc.director.loadScene("Game");
+
+        // this.videoScript.playVideo("video/part1/Start", null, function(videoObj){
+        //     if (cc.isValid(videoObj)) {}
+        //     console.log("视频播放完成！！！！！！！");
+        //     this.touchText.active = true;
+        //     this.touchText.runAction(cc.blink(1.5, 1).repeatForever());
+        // }.bind(this))
     }
 }
