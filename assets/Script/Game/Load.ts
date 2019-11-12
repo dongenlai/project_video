@@ -61,7 +61,6 @@ export default class Load extends BaseNode {
         //@ts-ignore
         window.allreadyUpdate = true;
         console.log("当前已经是最新版本");
-
         this._completeCallback();
     }
 
@@ -105,7 +104,7 @@ export default class Load extends BaseNode {
         } else {
             this.node.active = false
         }
-        
+
         //现在热跟新流程
         // this.doUpdateProcess();
         // 加载视频资源

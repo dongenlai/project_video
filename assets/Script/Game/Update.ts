@@ -109,6 +109,7 @@ export default class HotUpdate extends cc.EventTarget {
         code = event.getEventCode(),
         route = HotUpdate.EventType[code]
       let msg = ""
+      console.log("checkCb_code: " + code);
       switch (code) {
         case jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST:  //0
           break
