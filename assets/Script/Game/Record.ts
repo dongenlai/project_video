@@ -83,8 +83,6 @@ export default class Record extends BaseNode {
 
         this.record_tucao = cc.find("role_rank/record_tucao", thumbsPanel);
         this.record_thumbs = cc.find("role_rank/record_thumbs", thumbsPanel);
-        console.log(this.record_thumbs, "=--=-=-==--=-=-==-=")
-
         const topNode = cc.find("topNode", thumbsPanel)
 
         this.lastPraiseTopBtn = topNode.getChildByName("praiseDayBtn");
@@ -105,7 +103,6 @@ export default class Record extends BaseNode {
         const praiseWeekBtn_Text = cc.find("Background/Label", praiseWeekBtn).getComponent(cc.Label);;
         const praiseTotalBtn_Text = cc.find("Background/Label", praiseTotalBtn).getComponent(cc.Label);;
         this.pointPraiseAndTucaoBtn_Texts.push(praiseDayBtn_Text, praiseWeekBtn_Text, praiseTotalBtn_Text);
-
 
         //点赞/吐槽（日榜、周榜、总榜切换列表）
         const thumb_r_top =  cc.find("thumb_r_top", thumbsPanel);
@@ -195,7 +192,6 @@ export default class Record extends BaseNode {
         this.thumbNum.string = "点赞数";
         this.record_thumbs.active = true;
         this.record_tucao.active = false;
-
 
         this.pointPraiseAndTucaoBtn_Texts.forEach((target:cc.Label, index: number, array:[]) => {
             target.string = PraiseDes[index];
