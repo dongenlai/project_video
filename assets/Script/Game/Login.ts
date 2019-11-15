@@ -23,7 +23,7 @@ export default class Login extends BaseNode {
         //调用基类start
         super.start(["guestLogin", "wxLogin", "autoLogin", "notice"], this.onHttpEvent);
         // this.doRequestNotice();
-        cc.director.loadScene("Game");
+        // cc.director.loadScene("Game");
     }
 
     private doRequestNotice():void{
@@ -113,6 +113,12 @@ export default class Login extends BaseNode {
     }
 
     private onYkClick():void{
+
+        this.onGoGame();
+
+        return
+
+
         const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
         // if (_locaData.token) {
         //     cuckoo.curUser.token = _locaData.token;

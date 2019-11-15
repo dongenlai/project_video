@@ -31,6 +31,7 @@ var cuckoo;
         },
         //设置appid 
         setAppID: function (appid) {
+            console.log("-00--00--0-0" + cc.sys.os)
             if (cc.sys.os == cc.sys.OS_ANDROID) {
                 console.log("设置appid" + appid);
                 jsb.reflection.callStaticMethod(this._className, "setWXAppIDByClient", "(Ljava/lang/String;)V", appid);

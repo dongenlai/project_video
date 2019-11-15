@@ -30,7 +30,7 @@ export default class Game extends BaseNode {
        this.recordLayer = recordPrefab;
        //大厅背景
        const gameBg = cc.find("bg", this.node);
-       const leftNode = cc.find("leftNode", gameBg);
+       const leftNode = cc.find("leftNode", this.node);
        //玩家用户名字
        this.userName = cc.find("userName", leftNode).getComponent(cc.Label);
        //营救进度条

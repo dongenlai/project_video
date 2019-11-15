@@ -67,7 +67,7 @@ export default class Record extends BaseNode {
     record_tucao:cc.Node = null;
 
     onLoad () {
-        const bg = cc.find("bg", this.node);
+        const bg = cc.find("content", this.node);
         //左侧竖排按钮区域
         const leftNode = cc.find("leftNode", bg);
         this.lastTouchLeftBtn = cc.find("rescueBtn", leftNode);

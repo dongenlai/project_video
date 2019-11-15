@@ -69,9 +69,8 @@ export default class Load extends BaseNode {
         const progressData = data.progress
         if (progressData) {
             const { percent, filePercent, downloadedFiles, totalFiles, downloadedBytes, totalBytes } = progressData
-        // cc.error("-----progressDataprogressDataprogressData-----", JSON.stringify(progressData))
-        // this.pb.progress = percent
-            JSON.stringify(progressData + "更新数据返回");
+            cc.error("-----progressDataprogressDataprogressData-----", JSON.stringify(progressData))
+            // this.pb.progress = percent
             this.progressBar.progress = percent;
         }
     }
@@ -93,6 +92,10 @@ export default class Load extends BaseNode {
     }
 
     onLoad () {
+        //test
+        this._onAlredyUpToDate();
+
+        return;
         //@ts-ignore
         if (!window.allreadyUpdate) {
             if (cc.sys.isNative) {
