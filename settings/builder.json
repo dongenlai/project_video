@@ -24,10 +24,10 @@
   "mergeStartScene": false,
   "optimizeHotUpdate": false,
   "orientation": {
-    "landscapeLeft": false,
-    "landscapeRight": false,
+    "landscapeLeft": true,
+    "landscapeRight": true,
     "portrait": false,
-    "upsideDown": false
+    "upsideDown": true
   },
   "packageName": "com.cuckoo.game",
   "qqplay": {
