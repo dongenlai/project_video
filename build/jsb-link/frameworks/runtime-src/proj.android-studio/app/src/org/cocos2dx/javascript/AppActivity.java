@@ -31,12 +31,21 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.util.Log;
+
+import com.shared.sdk.PermissionManager;
+import java.util.List;
+import pub.devrel.easypermissions.EasyPermissions;
+import com.shared.sdk.NativeInterface;
 
 public class AppActivity extends Cocos2dxActivity {
+    public static AppActivity app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        app = this;
+
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
         if (!isTaskRoot()) {
             // Android launched another instance of the root activity into an existing task
@@ -47,7 +56,7 @@ public class AppActivity extends Cocos2dxActivity {
         }
         // DO OTHER INITIALIZATION BELOW
         SDKWrapper.getInstance().init(this);
-
+        XsdkNative.initXsdkNative(this);
     }
     
     @Override
@@ -85,6 +94,14 @@ public class AppActivity extends Cocos2dxActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         SDKWrapper.getInstance().onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 10086) {
+            Log.v("unknow apk install:", ""+resultCode);
+        }
+        Log.i("onActivityResult","====");
+
+        NativeInterface.onActivityResult(requestCode, resultCode, data);
+        PermissionManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -134,4 +151,5 @@ public class AppActivity extends Cocos2dxActivity {
         SDKWrapper.getInstance().onStart();
         super.onStart();
     }
+
 }
