@@ -5,6 +5,19 @@ namespace cuckoo {
          "SUCCESS",       //成功
          "CANCEL"         //取消
     }
+
+    //微信分享渠道 
+    enum SHARE_TYPE {
+        "FRIEND" = 0,    //好友
+        "PYQ"            //朋友圈
+    }
+
+    //分享内容 
+    enum SHARE_CONTENT_TYPE {
+        "IMAGE" = 0,    //图片 
+        "TEXT"          //文字
+    }
+
     export const WxInterFace = {
          _className:"com/shared/sdk/WXInterface",
          //静态（注意覆盖）
@@ -15,6 +28,8 @@ namespace cuckoo {
                 //参数回调函数 到java层eval 例如 
                 jsb.reflection.callStaticMethod(this._className, "sendAuthRequest", "(Ljava/lang/String;)V",  "");
             } else if (cc.sys.os == cc.sys.OS_IOS) {
+                console.log("微信ios 登陆")
+                jsb.reflection.callStaticMethod("weChatInterFace", "sendWXLoginRequest:", "");
             }
         },
 
@@ -61,6 +76,43 @@ namespace cuckoo {
  
             }
            return false;
+        },
+
+        //下订单 
+        doOrder:function():void{
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                // jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "doOrder", "(IILjava/lang/String;Ljava/lang/String;)V",
+                //     jsondata["orderId"], jsondata["channelId"], jsondata["payInfo"], jsondata["thirdOrderId"]);
+            } else if (cc.sys.os == cc.sys.OS_IOS) {
+                const payInfo = {
+                    appid:"wxadf0ba8a4e984ce8",
+                    noncestr:"87ff30748e52fd4941b3739f53f00c7a",
+                    package:"Sign=WXPay",
+                    partnerid:1900006771,
+                    prepayid:"wx24220244985843f7d06b1fbb1961990632",
+                    sign:"243A1394B579F473F506BB0F243BE511",
+                    timestamp:1574604165,
+                }
+                var s = JSON.stringify(payInfo)
+                jsb.reflection.callStaticMethod("weChatInterFace", "doOrder:withInfo:", s, "orderId");
+            }
+        },
+
+        //开始分享 
+        doShare:function(type:number, url:string, title:string, description:string, iconpath:string):void{
+            console.log("执行分享:" + "type: " + type + " url:" + url + " title:" + title + " description: " + description + " iconpath: " + iconpath);
+            var iconpath = cc.js.formatStr("%s", iconpath);
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                // jsb.reflection.callStaticMethod(this._className, "shareURLToWXPYQ", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", url, title, description, iconpath);
+                // jsb.reflection.callStaticMethod(this._className, "shareURLToWX", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", url, title, description, iconpath);
+                // jsb.reflection.callStaticMethod(this._className, "shareText", "(Ljava/lang/String;Ljava/lang/String;)V",  title, "wechat");
+                jsb.reflection.callStaticMethod(this._className, "shareImageToWX", "(Ljava/lang/String;)V",  iconpath);
+
+            } else if (cc.sys.os == cc.sys.OS_IOS) {
+                // jsb.reflection.callStaticMethod("weChatInterFace", "doShare:title:url:description:flag:", iconpath, title, url, description, 1);
+
+                jsb.reflection.callStaticMethod("weChatInterFace", "doShareText:flag:", title, 1);
+            }
         }
     }
 }

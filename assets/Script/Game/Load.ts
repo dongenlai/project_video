@@ -95,6 +95,13 @@ export default class Load extends BaseNode {
         //test
         this._onAlredyUpToDate();
 
+        // cc.loader.load('resources/json/icon.png', function (err, tex) {
+		//     cc.log('Result should be a texture+++++++: ' + (tex instanceof cc.Texture2D));
+        // });
+        
+        //icon 资源分享使用传递到native端全路径
+        cc.loader.loadRes("icon", cc.SpriteFrame);
+
         return;
         //@ts-ignore
         if (!window.allreadyUpdate) {
@@ -111,10 +118,11 @@ export default class Load extends BaseNode {
         //现在热跟新流程
         // this.doUpdateProcess();
         // 加载视频资源
-        // cc.loader.loadRes("json/video_try_play", (err, jsonAsset)=>{
-        //     const json = jsonAsset.json || {}
-        //     cc.loader.loadResDir("video/part1/", this._progressCallback.bind(this), this._completeCallback.bind(this));
-        // });
+        cc.loader.loadRes("json/video_try_play", (err, jsonAsset)=>{
+            const json = jsonAsset.json || {}
+            cc.loader.loadResDir("video/part1/", this._progressCallback.bind(this), this._completeCallback.bind(this));
+        });
+
     }
 
     onDestroy() {

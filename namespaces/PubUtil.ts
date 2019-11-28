@@ -1,15 +1,40 @@
 namespace cuckoo {
     export const PubUtil = {	
         /*
-          通用弹框提示
+          截屏传入当前父节点,和存放路径
         */
-        createToast:function(node:cc.Node, str:string, callback?:Function){
-            let prefab = cc.instantiate(this.videoPrefab);
-            prefab.parent = node;
+       captureScreen: function (parent: cc.Node, filePath: string) {
+            //注意，EditBox，VideoPlayer，Webview 等控件无法被包含在截图里面
+            if(CC_JSB) {
+                let node = new cc.Node();
+                node.parent = parent;
+                node.width = parent.getContentSize().width;
+                node.height = parent.getContentSize().height;
+                let camera = node.addComponent(cc.Camera);
+                
+                let texture = new cc.RenderTexture();
+                texture.initWithSize(node.width, node.height);
+                camera.targetTexture = texture;
 
-            
+                // 渲染一次摄像机，即更新一次内容到 RenderTexture 中
+                parent.scaleY = -1;
+                camera.render(node.parent);
+                parent.scaleY = 1;
 
-
+                // 这样我们就能从 RenderTexture 中获取到数据了
+                let data = texture.readPixels();
+                let width = texture.width;
+                let height = texture.height;
+                
+                let fullPath = filePath;
+                if (jsb.fileUtils.isFileExist(fullPath)) {
+                    jsb.fileUtils.removeFile(fullPath);
+                }
+                console.log("截图保存路径:" + fullPath);
+                jsb.saveImageData(data, width, height, fullPath);
+            }else{
+                //todo
+            }
         },
 
          /**
