@@ -1,0 +1,8 @@
+{
+    "ndk_module_path" :[
+        "/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release",
+        "/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release/cocos",
+        "/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release/external"
+    ],
+    "copy_resources": []
+}

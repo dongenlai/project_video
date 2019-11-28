@@ -98,9 +98,8 @@ export default class Login extends BaseNode {
         const self = this;
         cuckoo.WxInterFace.wXLogin(function(retCode, code){
             console.log("微信登陆成功:"+ retCode + " code: ");
-            
-
-            cuckoo.WxInterFace.doShare(1, "www.baidu.com", "荒野客栈", "测试环节", cc.loader.getRes("icon"));
+            // cc.loader.getRes("icon")
+            cuckoo.WxInterFace.doShare(1, "www.baidu.com", "荒野客栈", "测试环节",jsb.fileUtils.getWritablePath() + "a.png");
             return
             if (parseInt(retCode) == 0) {
                 const data = { code:code };

@@ -100,6 +100,13 @@ export default class Load extends BaseNode {
         //icon 资源分享使用传递到native端全路径
         cc.loader.loadRes("icon", cc.SpriteFrame);
 
+        // cc.loader.load('resources/json/icon.png', function (err, tex) {
+		//     cc.log('Result should be a texture+++++++: ' + (tex instanceof cc.Texture2D));
+        // });
+        
+        //icon 资源分享使用传递到native端全路径
+        cc.loader.loadRes("icon", cc.SpriteFrame);
+
         return;
         //@ts-ignore
         if (!window.allreadyUpdate) {

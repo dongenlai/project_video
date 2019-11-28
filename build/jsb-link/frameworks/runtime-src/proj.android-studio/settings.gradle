@@ -1,0 +1,4 @@
+include ':libcocos2dx'
+project(':libcocos2dx').projectDir = new File('/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release/cocos/platform/android/libcocos2dx')
+include ':ccc-video-project'
+project(':ccc-video-project').projectDir = new File(settingsDir, 'app')

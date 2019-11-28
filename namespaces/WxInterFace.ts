@@ -110,7 +110,6 @@ namespace cuckoo {
 
             } else if (cc.sys.os == cc.sys.OS_IOS) {
                 // jsb.reflection.callStaticMethod("weChatInterFace", "doShare:title:url:description:flag:", iconpath, title, url, description, 1);
-
                 jsb.reflection.callStaticMethod("weChatInterFace", "doShareText:flag:",  title, 1);
             }
         }
