@@ -3,7 +3,8 @@ namespace cuckoo {
     enum WXLOGIN_STATE {
          "REFUSE" = 0,    //拒绝
          "SUCCESS",       //成功
-         "CANCEL"         //取消
+         "CANCEL",        //取消
+         "DEFAULT"        //异常
     }
 
     //微信分享渠道 
@@ -29,7 +30,7 @@ namespace cuckoo {
                 jsb.reflection.callStaticMethod(this._className, "sendAuthRequest", "(Ljava/lang/String;)V",  "");
             } else if (cc.sys.os == cc.sys.OS_IOS) {
                 console.log("微信ios 登陆")
-                jsb.reflection.callStaticMethod("weChatInterFace", "sendWXLoginRequest:", "");
+                jsb.reflection.callStaticMethod("wxInterface", "sendWXLoginRequest:", "");
             }
         },
 
@@ -44,6 +45,10 @@ namespace cuckoo {
             if (this._callFunc && typeof this._callFunc === 'function' ){
                 this._callFunc(reCode, code)
             }
+        },
+
+        wXShareRes:function(reCode:number){
+            console.log("分享结果回调:" + reCode)
         },
 
         //设置appid 
@@ -94,7 +99,7 @@ namespace cuckoo {
                     timestamp:1574604165,
                 }
                 var s = JSON.stringify(payInfo)
-                jsb.reflection.callStaticMethod("weChatInterFace", "doOrder:withInfo:", s, "orderId");
+                jsb.reflection.callStaticMethod("wxInterface", "doOrder:withInfo:", s, "orderId");
             }
         },
 
@@ -104,13 +109,13 @@ namespace cuckoo {
             var iconpath = cc.js.formatStr("%s", iconpath);
             if (cc.sys.os == cc.sys.OS_ANDROID) {
                 // jsb.reflection.callStaticMethod(this._className, "shareURLToWXPYQ", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", url, title, description, iconpath);
-                // jsb.reflection.callStaticMethod(this._className, "shareURLToWX", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", url, title, description, iconpath);
+                jsb.reflection.callStaticMethod(this._className, "shareURLToWX", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", url, title, description, iconpath);
                 // jsb.reflection.callStaticMethod(this._className, "shareText", "(Ljava/lang/String;Ljava/lang/String;)V",  title, "wechat");
-                jsb.reflection.callStaticMethod(this._className, "shareImageToWX", "(Ljava/lang/String;)V",  iconpath);
+                // jsb.reflection.callStaticMethod(this._className, "shareImageToWX", "(Ljava/lang/String;)V",  iconpath);
 
             } else if (cc.sys.os == cc.sys.OS_IOS) {
-                // jsb.reflection.callStaticMethod("weChatInterFace", "doShare:title:url:description:flag:", iconpath, title, url, description, 1);
-                jsb.reflection.callStaticMethod("weChatInterFace", "doShareText:flag:",  title, 1);
+                jsb.reflection.callStaticMethod("wxInterface", "doShare:title:url:description:flag:", iconpath, title, url, description, 1);
+                // jsb.reflection.callStaticMethod("wxInterface", "doShareText:flag:",  title, 1);
             }
         }
     }

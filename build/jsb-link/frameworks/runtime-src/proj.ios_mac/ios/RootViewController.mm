@@ -29,6 +29,10 @@
 
 #include "platform/CCApplication.h"
 #include "platform/ios/CCEAGLView-ios.h"
+#import "WXApiManager.h"
+#import "wxInterface.h"
+#import "Constant.h"
+#import "cocos/scripting/js-bindings/jswrapper/SeApi.h"
 
 @implementation RootViewController
 
@@ -90,9 +94,134 @@ return self;
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - WXApiManagerDelegate
+- (void)managerDidRecvGetMessageReq:(GetMessageFromWXReq *)req {
+    // 微信请求App提供内容， 需要app提供内容后使用sendRsp返回
+    NSString *strTitle = [NSString stringWithFormat:@"微信请求App提供内容"];
+    NSString *strMsg = [NSString stringWithFormat:@"openID: %@", req.openID];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
+                                                    message:strMsg
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    alert.tag = kRecvGetMessageReqAlertTag;
+    [alert show];
+    [alert release];
+}
+
+//显示微信传过来的内容
+- (void)managerDidRecvShowMessageReq:(ShowMessageFromWXReq *)req {
+    WXMediaMessage *msg = req.message;
+    WXAppExtendObject *obj = msg.mediaObject;
+    NSString *strTitle = [NSString stringWithFormat:@"微信请求App显示内容"];
+    NSString *strMsg = [NSString stringWithFormat:@"openID: %@, 标题：%@ \n内容：%@ \n附带信息：%@ \n缩略图:%lu bytes\n附加消息:%@\n", req.openID, msg.title, msg.description, obj.extInfo, (unsigned long)msg.thumbData.length, msg.messageExt];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
+                                                    message:strMsg
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+    [alert release];
+}
+
+- (void)managerDidRecvLaunchFromWXReq:(LaunchFromWXReq *)req {
+    WXMediaMessage *msg = req.message;
+    //从微信启动App
+    NSString *strTitle = [NSString stringWithFormat:@"从微信启动"];
+    NSString *strMsg = [NSString stringWithFormat:@"openID: %@, messageExt:%@", req.openID, msg.messageExt];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
+                                                    message:strMsg
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+    [alert release];
+}
+
+- (void)managerDidRecvAddCardResponse:(AddCardToWXCardPackageResp *)response {
+    NSMutableString* cardStr = [[[NSMutableString alloc] init] autorelease];
+    for (WXCardItem* cardItem in response.cardAry) {
+        [cardStr appendString:[NSString stringWithFormat:@"cardid:%@ cardext:%@ cardstate:%u\n",cardItem.cardId,cardItem.extMsg,(unsigned int)cardItem.cardState]];
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"add card resp"
+                                                    message:cardStr
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+    [alert release];
+}
+
++ (BOOL)loadHeadImage:(NSString *)fullpath;
+{
+    //ImageLoader::getInstance()->load([fullpath UTF8String]);
+    return false; //test
+}
+
++ (BOOL)screenShot:(NSString *)fullpath withInfo:(NSString *)filename;
+{
+    NSString* filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", filename];
+    UIImage *viewImage = [UIImage imageWithContentsOfFile:filePath];
+    if (viewImage != nil) {
+        UIImageWriteToSavedPhotosAlbum(viewImage, nil, nil, nil);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"保存成功" message:filename delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        [alertView show];
+    }
+}
+
+//微信登陆认证返回结果
+- (void)managerDidRecvAuthResponse:(SendAuthResp *)response {
+    NSString *strCode = [NSString stringWithFormat:@"%@", response.code];
+    NSString *strState = [NSString stringWithFormat:@"%@", response.state];
+    NSString *strRes = @"1";
+    NSLog(@"wx_strCode:%@,wx_strState:%@",strCode, strState);
+    if(response.errCode==0)
+        strRes = @"0";
+    NSString *aimStr = [NSString stringWithFormat:@"\"%@\" , \"%@\" , \"%@\" ",strRes,strCode,strState];
+    NSString* functionCall = [[NSString alloc] initWithFormat:@"cuckoo.WxInterFace.wXLoginRes(%@)",aimStr];
+    se::ScriptEngine::getInstance()->evalString([functionCall cStringUsingEncoding:NSUTF8StringEncoding]);
+}
+
+//微信支付返回结果
+- (void)managerDidRecvPayResultResponse:(PayResp *)response {
+    //支付返回结果，实际支付结果需要去微信服务器端查询
+    NSString *strMsg,*strTitle = [NSString stringWithFormat:@"支付结果"];
+    switch (response.errCode) {
+        case WXSuccess:
+        {
+            strMsg = @"支付结果：成功！";
+            NSLog(@"支付成功－PaySuccess，retcode = %d", response.errCode);
+            NSString *aimStr = [NSString stringWithFormat:@"\"%@\" , \"2\" , \"1\" ",[wxInterface shareInstance].lastOrderId];
+            NSString* functionCall = [[NSString alloc] initWithFormat:@"PayBZ.notifyPayRes(%@)",aimStr];
+            NSLog(@"%@",functionCall);
+            se::ScriptEngine::getInstance()->evalString([functionCall cStringUsingEncoding:NSUTF8StringEncoding], NULL);
+        }
+            break;
+        default:
+            strMsg = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", response.errCode,response.errStr];
+            NSLog(@"错误，retcode = %d, retstr = %@", response.errCode,response.errStr);
+            break;
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+    [alert release];
+}
+
+//微信分享结果回调(微信官方调整无论w用户取消分享还是成功分享在回调结果中都是success)
+- (void)managerDidRecvMessageResponse:(SendMessageToWXResp *)response {
+    NSString *strRes = @"1";
+    if(response.errCode==0)
+        strRes = @"0";
+    
+    NSString *aimStr = [NSString stringWithFormat:@"\"%@\"",strRes];
+    NSString* functionCall = [[NSString alloc] initWithFormat:@"cuckoo.WxInterFace.wXShareRes(%@)",aimStr];
+    se::ScriptEngine::getInstance()->evalString([functionCall cStringUsingEncoding:NSUTF8StringEncoding]);
+}
 
 @end

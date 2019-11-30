@@ -29,13 +29,13 @@
     "portrait": false,
     "upsideDown": true
   },
-  "packageName": "com.cuckoo.game",
+  "packageName": "com.cuckoo.videogame",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait",
     "zip": false
   },
-  "startScene": "097d628d-1a70-4f65-8e8d-24d50ddc45f0",
+  "startScene": "ed967396-c5e8-4ac8-9a30-05e672faadb4",
   "title": "ccc-video-project",
   "webOrientation": "auto",
   "wechatgame": {

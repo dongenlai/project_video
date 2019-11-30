@@ -1,40 +1,53 @@
 var cuckoo;
 
-(function(o) {
-o.PubUtil = {
-createToast: function(o, t, e) {
-cc.instantiate(this.videoPrefab).parent = o;
+(function(e) {
+e.PubUtil = {
+captureScreen: function(e, t) {
+var r = new cc.Node();
+r.parent = e;
+r.width = e.getContentSize().width;
+r.height = e.getContentSize().height;
+var n = r.addComponent(cc.Camera), o = new cc.RenderTexture();
+o.initWithSize(r.width, r.height);
+n.targetTexture = o;
+e.scaleY = -1;
+n.render(r.parent);
+e.scaleY = 1;
+var i = o.readPixels(), c = o.width, a = o.height, s = t;
+jsb.fileUtils.isFileExist(s) && jsb.fileUtils.removeFile(s);
+console.log("截图保存路径:" + s);
+jsb.saveImageData(i, c, a, s);
 },
-obj2String: function(o) {
+obj2String: function(e) {
 try {
-return JSON.stringify(o);
-} catch (o) {
+return JSON.stringify(e);
+} catch (e) {
 console.log("obj2String error");
 return "";
 }
 },
-string2Obj: function(o) {
+string2Obj: function(e) {
 try {
-return JSON.parse(o);
-} catch (o) {
-console.error(cc.js.formatStr("exception name=%s, msg=%s class=%s line=%d", o.name, o.message, o.fileName, o.lineNumber));
+return JSON.parse(e);
+} catch (e) {
+console.error(cc.js.formatStr("exception name=%s, msg=%s class=%s line=%d", e.name, e.message, e.fileName, e.lineNumber));
 return {};
 }
 },
-setLocalDataJson: function(t, e) {
-e || (e = {});
-e.version = o.GAME.cfg.localStorageVersion;
-cc.sys.localStorage.setItem(e.version + t, this.obj2String(e));
+setLocalDataJson: function(t, r) {
+r || (r = {});
+r.version = e.GAME.cfg.localStorageVersion;
+cc.sys.localStorage.setItem(r.version + t, this.obj2String(r));
 },
 getLocalDataJson: function(t) {
-var e = cc.sys.localStorage.getItem(o.GAME.cfg.localStorageVersion + t);
-if (!e) return {};
-var r = this.string2Obj(e);
-if (r.version !== o.GAME.cfg.localStorageVersion) {
+var r = cc.sys.localStorage.getItem(e.GAME.cfg.localStorageVersion + t);
+if (!r) return {};
+var n = this.string2Obj(r);
+if (n.version !== e.GAME.cfg.localStorageVersion) {
 console.log("getLocalDataJson version changed");
 return {};
 }
-return r;
+return n;
 }
 };
 })(cuckoo || (cuckoo = {}));

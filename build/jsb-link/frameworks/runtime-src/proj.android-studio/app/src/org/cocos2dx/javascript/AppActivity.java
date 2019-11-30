@@ -73,21 +73,21 @@ public class AppActivity extends Cocos2dxActivity {
     protected void onResume() {
         super.onResume();
         SDKWrapper.getInstance().onResume();
-
+        NativeInterface.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         SDKWrapper.getInstance().onPause();
-
+        NativeInterface.onPause();
     }
 
     @Override
     protected void onDestroy() {
+        NativeInterface.onDestory();
         super.onDestroy();
         SDKWrapper.getInstance().onDestroy();
-
     }
 
     @Override

@@ -46,6 +46,19 @@
 		509D4AE717EBB81800697056 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 509D4AE617EBB81800697056 /* OpenGL.framework */; };
 		509D4AE917EBB82000697056 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 509D4AE817EBB82000697056 /* AppKit.framework */; };
 		509D4AEB17EBB82600697056 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 509D4AEA17EBB82600697056 /* IOKit.framework */; };
+		653EA79123910210001A275B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653EA79023910210001A275B /* Security.framework */; };
+		653EA79323910224001A275B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653EA79223910224001A275B /* CoreGraphics.framework */; };
+		653EA7952391023A001A275B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653EA7942391023A001A275B /* WebKit.framework */; };
+		653EA79823911D33001A275B /* ZQStatusBarTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 653EA79723911D33001A275B /* ZQStatusBarTool.m */; };
+		6589AA99238FE70E00BA38F4 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6589AA87238FE70E00BA38F4 /* README.txt */; };
+		6589AA9A238FE70E00BA38F4 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6589AA89238FE70E00BA38F4 /* libWeChatSDK.a */; };
+		6589AA9B238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6589AA8C238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm */; };
+		6589AA9C238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6589AA8E238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.mm */; };
+		6589AA9D238FE70E00BA38F4 /* WXMediaMessage+messageConstruct.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6589AA92238FE70E00BA38F4 /* WXMediaMessage+messageConstruct.mm */; };
+		6589AA9E238FE70E00BA38F4 /* UIAlertView+WX.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6589AA93238FE70E00BA38F4 /* UIAlertView+WX.mm */; };
+		6589AA9F238FE70E00BA38F4 /* WXApiRequestHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6589AA96238FE70E00BA38F4 /* WXApiRequestHandler.mm */; };
+		6589AAA0238FE70E00BA38F4 /* WXApiManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6589AA98238FE70E00BA38F4 /* WXApiManager.mm */; };
+		6589AAA42390CDB100BA38F4 /* wxInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589AAA22390CDB100BA38F4 /* wxInterface.m */; };
 		A92275421517C094001B78AA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A92275411517C094001B78AA /* QuartzCore.framework */; };
 		A92275441517C094001B78AA /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A92275431517C094001B78AA /* OpenGLES.framework */; };
 		A92275461517C094001B78AA /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A92275451517C094001B78AA /* OpenAL.framework */; };
@@ -53,13 +66,11 @@
 		A922754A1517C094001B78AA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A92275491517C094001B78AA /* AVFoundation.framework */; };
 		A922754C1517C094001B78AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A922754B1517C094001B78AA /* UIKit.framework */; };
 		A922754E1517C094001B78AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A922754D1517C094001B78AA /* Foundation.framework */; };
-		A92275501517C094001B78AA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A922754F1517C094001B78AA /* CoreGraphics.framework */; };
 		ABE456E31D34F87300F1F400 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABE456E21D34F87300F1F400 /* CFNetwork.framework */; };
 		ABE456E51D34F87A00F1F400 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABE456E41D34F87A00F1F400 /* CoreFoundation.framework */; };
 		ABE456E71D34F87F00F1F400 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABE456E61D34F87F00F1F400 /* MobileCoreServices.framework */; };
 		ABE456E91D34F88A00F1F400 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABE456E81D34F88A00F1F400 /* SystemConfiguration.framework */; };
 		ABE456EB1D34F89000F1F400 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABE456EA1D34F89000F1F400 /* GameController.framework */; };
-		BA3A85EC1A724AE900924D24 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA3A85EB1A724AE900924D24 /* Security.framework */; };
 		BA4E718119EB6E3F00932425 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA4E718019EB6E3E00932425 /* MediaPlayer.framework */; };
 		BAEE4D841AC40C11003BEB0F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAEE4D831AC40C11003BEB0F /* Security.framework */; };
 		C03780EB18BEE0E400FE4F13 /* src in Resources */ = {isa = PBXBuildFile; fileRef = C03780EA18BEE0E400FE4F13 /* src */; };
@@ -149,6 +160,32 @@
 		509D4AE617EBB81800697056 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		509D4AE817EBB82000697056 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		509D4AEA17EBB82600697056 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		653EA78F2390F441001A275B /* ccc-video-project-mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ccc-video-project-mobile.entitlements"; sourceTree = "<group>"; };
+		653EA79023910210001A275B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		653EA79223910224001A275B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		653EA7942391023A001A275B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
+		653EA79623911D33001A275B /* ZQStatusBarTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZQStatusBarTool.h; path = ios/ZQStatusBarTool.h; sourceTree = "<group>"; };
+		653EA79723911D33001A275B /* ZQStatusBarTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZQStatusBarTool.m; path = ios/ZQStatusBarTool.m; sourceTree = "<group>"; };
+		6589AA85238FE70E00BA38F4 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		6589AA86238FE70E00BA38F4 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		6589AA87238FE70E00BA38F4 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		6589AA88238FE70E00BA38F4 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
+		6589AA89238FE70E00BA38F4 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		6589AA8B238FE70E00BA38F4 /* WXMediaMessage+messageConstruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WXMediaMessage+messageConstruct.h"; sourceTree = "<group>"; };
+		6589AA8C238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GetMessageFromWXResp+responseWithTextOrMediaMessage.mm"; sourceTree = "<group>"; };
+		6589AA8D238FE70E00BA38F4 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
+		6589AA8E238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "SendMessageToWXReq+requestWithTextOrMediaMessage.mm"; sourceTree = "<group>"; };
+		6589AA8F238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GetMessageFromWXResp+responseWithTextOrMediaMessage.h"; sourceTree = "<group>"; };
+		6589AA90238FE70E00BA38F4 /* UIAlertView+WX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+WX.h"; sourceTree = "<group>"; };
+		6589AA91238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SendMessageToWXReq+requestWithTextOrMediaMessage.h"; sourceTree = "<group>"; };
+		6589AA92238FE70E00BA38F4 /* WXMediaMessage+messageConstruct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "WXMediaMessage+messageConstruct.mm"; sourceTree = "<group>"; };
+		6589AA93238FE70E00BA38F4 /* UIAlertView+WX.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertView+WX.mm"; sourceTree = "<group>"; };
+		6589AA95238FE70E00BA38F4 /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
+		6589AA96238FE70E00BA38F4 /* WXApiRequestHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WXApiRequestHandler.mm; sourceTree = "<group>"; };
+		6589AA97238FE70E00BA38F4 /* WXApiRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiRequestHandler.h; sourceTree = "<group>"; };
+		6589AA98238FE70E00BA38F4 /* WXApiManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WXApiManager.mm; sourceTree = "<group>"; };
+		6589AAA22390CDB100BA38F4 /* wxInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = wxInterface.m; path = ios/wxInterface.m; sourceTree = "<group>"; };
+		6589AAA32390CDB100BA38F4 /* wxInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wxInterface.h; path = ios/wxInterface.h; sourceTree = "<group>"; };
 		A922753D1517C094001B78AA /* ccc-video-project-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ccc-video-project-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A92275411517C094001B78AA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A92275431517C094001B78AA /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -208,6 +245,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6589AA9A238FE70E00BA38F4 /* libWeChatSDK.a in Frameworks */,
+				653EA7952391023A001A275B /* WebKit.framework in Frameworks */,
+				653EA79323910224001A275B /* CoreGraphics.framework in Frameworks */,
+				653EA79123910210001A275B /* Security.framework in Frameworks */,
 				1A37E9DA200DEF120078AF72 /* SystemConfiguration.framework in Frameworks */,
 				1ACA99251F550A28002DE225 /* JavaScriptCore.framework in Frameworks */,
 				1A499EBD1F0CDDD9004E6AEC /* libicucore.A.tbd in Frameworks */,
@@ -219,7 +260,6 @@
 				294D7D801D0D668F002CE7B7 /* CoreText.framework in Frameworks */,
 				4DD5E6B11CDAF65C0046171E /* libcocos2d iOS.a in Frameworks */,
 				FA676C761C71AFA200E091E3 /* libiconv.dylib in Frameworks */,
-				BA3A85EC1A724AE900924D24 /* Security.framework in Frameworks */,
 				BA4E718119EB6E3F00932425 /* MediaPlayer.framework in Frameworks */,
 				D6B061241803AB9F0077942B /* CoreMotion.framework in Frameworks */,
 				1A82F5FB169AC92500C4B13A /* libsqlite3.dylib in Frameworks */,
@@ -231,7 +271,6 @@
 				A922754A1517C094001B78AA /* AVFoundation.framework in Frameworks */,
 				A922754C1517C094001B78AA /* UIKit.framework in Frameworks */,
 				A922754E1517C094001B78AA /* Foundation.framework in Frameworks */,
-				A92275501517C094001B78AA /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,9 +321,52 @@
 			path = mac;
 			sourceTree = "<group>";
 		};
+		6589AA84238FE70E00BA38F4 /* WeChatSDK1.8.6.1 */ = {
+			isa = PBXGroup;
+			children = (
+				6589AA85238FE70E00BA38F4 /* WXApi.h */,
+				6589AA86238FE70E00BA38F4 /* WXApiObject.h */,
+				6589AA87238FE70E00BA38F4 /* README.txt */,
+				6589AA88238FE70E00BA38F4 /* WechatAuthSDK.h */,
+				6589AA89238FE70E00BA38F4 /* libWeChatSDK.a */,
+				6589AA8A238FE70E00BA38F4 /* Helper */,
+				6589AA94238FE70E00BA38F4 /* Control */,
+			);
+			name = WeChatSDK1.8.6.1;
+			path = ios/WeChatSDK1.8.6.1;
+			sourceTree = "<group>";
+		};
+		6589AA8A238FE70E00BA38F4 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				6589AA8B238FE70E00BA38F4 /* WXMediaMessage+messageConstruct.h */,
+				6589AA8C238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm */,
+				6589AA8D238FE70E00BA38F4 /* Constant.h */,
+				6589AA8E238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.mm */,
+				6589AA8F238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.h */,
+				6589AA90238FE70E00BA38F4 /* UIAlertView+WX.h */,
+				6589AA91238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.h */,
+				6589AA92238FE70E00BA38F4 /* WXMediaMessage+messageConstruct.mm */,
+				6589AA93238FE70E00BA38F4 /* UIAlertView+WX.mm */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		6589AA94238FE70E00BA38F4 /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				6589AA95238FE70E00BA38F4 /* WXApiManager.h */,
+				6589AA96238FE70E00BA38F4 /* WXApiRequestHandler.mm */,
+				6589AA97238FE70E00BA38F4 /* WXApiRequestHandler.h */,
+				6589AA98238FE70E00BA38F4 /* WXApiManager.mm */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
 		A92275321517C094001B78AA = {
 			isa = PBXGroup;
 			children = (
+				653EA78F2390F441001A275B /* ccc-video-project-mobile.entitlements */,
 				28A34C0F225B462E00926306 /* subpackages */,
 				1AC6FB34180E9ACB004C840B /* cocos2d_libs.xcodeproj */,
 				D4545214156E28EF00887EB5 /* Classes */,
@@ -308,6 +390,9 @@
 		A92275401517C094001B78AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				653EA7942391023A001A275B /* WebKit.framework */,
+				653EA79223910224001A275B /* CoreGraphics.framework */,
+				653EA79023910210001A275B /* Security.framework */,
 				1A37E9D9200DEF110078AF72 /* SystemConfiguration.framework */,
 				1A37E9DB200DEF190078AF72 /* SystemConfiguration.framework */,
 				1ACA99241F550A28002DE225 /* JavaScriptCore.framework */,
@@ -351,6 +436,11 @@
 		D45446CC156DE73F00887EB5 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				653EA79623911D33001A275B /* ZQStatusBarTool.h */,
+				653EA79723911D33001A275B /* ZQStatusBarTool.m */,
+				6589AAA32390CDB100BA38F4 /* wxInterface.h */,
+				6589AAA22390CDB100BA38F4 /* wxInterface.m */,
+				6589AA84238FE70E00BA38F4 /* WeChatSDK1.8.6.1 */,
 				051C018221E32AE400D4A347 /* UserConfigIOS.debug.xcconfig */,
 				051C018121E32AE400D4A347 /* UserConfigIOS.release.xcconfig */,
 				22CC756E21BA5B5C00FBF2F7 /* service */,
@@ -397,7 +487,7 @@
 				4DD5E6AA1CDAF6330046171E /* PBXTargetDependency */,
 			);
 			name = "ccc-video-project-desktop";
-			productName = ccc-video-project;
+			productName = "ccc-video-project";
 			productReference = 509D4AAA17EBB24E00697056 /* ccc-video-project-desktop.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -415,7 +505,7 @@
 				4DD5E6B01CDAF6520046171E /* PBXTargetDependency */,
 			);
 			name = "ccc-video-project-mobile";
-			productName = ccc-video-project;
+			productName = "ccc-video-project";
 			productReference = A922753D1517C094001B78AA /* ccc-video-project-mobile.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -426,6 +516,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
+				TargetAttributes = {
+					A922753C1517C094001B78AA = {
+						DevelopmentTeam = 475F2647W8;
+						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = A92275371517C094001B78AA /* Build configuration list for PBXProject "ccc-video-project" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -490,6 +591,7 @@
 			files = (
 				28A34C10225B462E00926306 /* subpackages in Resources */,
 				4033CDBC20E4935100DAA37B /* jsb-adapter in Resources */,
+				6589AA99238FE70E00BA38F4 /* README.txt in Resources */,
 				1AFFCD7F1F7A5D5400628F2C /* Images.xcassets in Resources */,
 				1AFFCD7E1F7A5D5400628F2C /* LaunchScreenBackground.png in Resources */,
 				1AE159EC18C9DF3600FCA372 /* project.json in Resources */,
@@ -518,10 +620,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				509D4AC917EBB2AB00697056 /* RootViewController.mm in Sources */,
+				653EA79823911D33001A275B /* ZQStatusBarTool.m in Sources */,
+				6589AA9B238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm in Sources */,
 				D4545227156E28EF00887EB5 /* AppDelegate.cpp in Sources */,
 				509D4AC817EBB2AB00697056 /* main.m in Sources */,
+				6589AA9C238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.mm in Sources */,
+				6589AA9E238FE70E00BA38F4 /* UIAlertView+WX.mm in Sources */,
+				6589AAA0238FE70E00BA38F4 /* WXApiManager.mm in Sources */,
 				22CC757121BA5B5C00FBF2F7 /* SDKWrapper.m in Sources */,
+				6589AAA42390CDB100BA38F4 /* wxInterface.m in Sources */,
 				509D4ABC17EBB2AB00697056 /* AppController.mm in Sources */,
+				6589AA9F238FE70E00BA38F4 /* WXApiRequestHandler.mm in Sources */,
+				6589AA9D238FE70E00BA38F4 /* WXMediaMessage+messageConstruct.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -670,7 +780,9 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 475F2647W8;
 				ENABLE_BITCODE = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -684,11 +796,15 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release/external/ios/libs";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release/external/ios/libs",
+					"$(PROJECT_DIR)/ios/WeChatSDK1.8.6.1",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
 				);
+				PROVISIONING_PROFILE_SPECIFIER = cuckoo_videoGame;
 				SDKROOT = iphoneos;
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -704,7 +820,9 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 475F2647W8;
 				ENABLE_BITCODE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -717,11 +835,15 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release/external/ios/libs";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/dongenlai/Documents/cocos-creator/cocos2d-x-2.1.2-release/external/ios/libs",
+					"$(PROJECT_DIR)/ios/WeChatSDK1.8.6.1",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
 				);
+				PROVISIONING_PROFILE_SPECIFIER = cuckoo_videoGame;
 				SDKROOT = iphoneos;
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -30,7 +30,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -61,13 +60,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import android.view.WindowManager;
+import android.view.Window;
+import android.content.ContentResolver;
+
 
 public class NativeInterface {
     private static Activity mActivity = null;
@@ -111,11 +114,9 @@ public class NativeInterface {
         myClipboard = (ClipboardManager) myContext.getSystemService(Context.CLIPBOARD_SERVICE);
         // 注册电量的广播监听
         mBatteryReceiver = new BatteryReceiver();
-
         MyListener = new MyPhoneStateListener();// 初始化对象
         Tel = (TelephonyManager) myContext.getSystemService(Context.TELEPHONY_SERVICE);
         Tel.listen(MyListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
-
         wifiManager = (WifiManager) myContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         registerSignalListener();
         MultiDex.install(GlobalVariables.application);
@@ -163,7 +164,6 @@ public class NativeInterface {
                     handler.sendMessage(msg);
                     return;
                 }
-
                 // 根据获得的信号强度发送信息
                 if (wifilevel <= 0 && wifilevel >= -50) {
                     Message msg = new Message();
@@ -192,7 +192,6 @@ public class NativeInterface {
 
         // 使用Handler实现UI线程与Timer线程之间的信息传递,每5秒告诉UI线程获得wifiInto
         handler = new Handler() {
-
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -374,7 +373,7 @@ public class NativeInterface {
     }
 
     public static void openWebURL(String url) {
-        Log.v("NativeInterface", "openWebURL+++++++++++++:" + url);
+        Log.v("NativeInterface", "openWebURL:" + url);
         Intent mIntent = new Intent(Intent.ACTION_VIEW);
         mIntent.setData(Uri.parse(url));
         mActivity.startActivity(mIntent);
@@ -416,6 +415,9 @@ public class NativeInterface {
         vib.vibrate(shakeTime);
     }
 
+    /**
+     * 根据包名查看app是否安装
+     */
     public static boolean checkIsAppInstalled(String packageName) {
         boolean isInstalled = false;
         final PackageManager packageManager = myContext.getPackageManager();
@@ -528,7 +530,6 @@ public class NativeInterface {
             e.printStackTrace();
         }
         return false;
-
     }
 
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -541,7 +542,6 @@ public class NativeInterface {
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                         }
                     })
                     .create().show();
@@ -636,7 +636,6 @@ public class NativeInterface {
         mActivity.startActivityForResult(intent, 1000);
     }
 
-
     public static void installApk(final String apkPath) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         File apk = new File(apkPath);
@@ -652,7 +651,6 @@ public class NativeInterface {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             myContext.startActivity(intent);
         }
-
     }
 
     public static void downloadPause() {
@@ -723,7 +721,6 @@ public class NativeInterface {
             {
                 return false;
             }
-
         }
         catch (Exception e)
         {
@@ -747,7 +744,6 @@ public class NativeInterface {
         }
         return true;
     }
-
 
     public static void downloadFile(String downloadUrl, final String fileName) {
         DOWNLOAD_URL = downloadUrl;
@@ -857,7 +853,6 @@ public class NativeInterface {
                 appDir.mkdir();
             }
             String imageUri = insertImageToSystem(myContext, imgPath);
-            // Uri uri=Uri.fromFile(new File(imgPath));
             shareIntent.putExtra(Intent.EXTRA_STREAM,Uri.parse(imageUri));
         }
 
@@ -907,7 +902,6 @@ public class NativeInterface {
     public static class BatteryReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            //arg0.unregisterReceiver(this);
             int rawlevel = arg1.getIntExtra("level", -1);// 获得当前电量
             int scale = arg1.getIntExtra("scale", -1); // 获得总电量
             int level = -1;
@@ -920,6 +914,7 @@ public class NativeInterface {
 
     // 电量
     public static String getDeviceBattery() {
+        Log.v("NativeInterface", "mBatteryLevel:" + String.valueOf(mBatteryLevel));
         return String.valueOf(mBatteryLevel);
     }
 
@@ -976,25 +971,25 @@ public class NativeInterface {
     private static String networkType;
     public static String getInternetStatus() {
         int networkClass = getNetworkClass();
-        String type = "未知";
+        String type = "-1";  //未知
         switch (networkClass) {
             case NETWORK_CLASS_UNAVAILABLE:
-                type = "Not";
+                type = "0";
                 break;
             case NETWORK_CLASS_WIFI:
-                type = "WIFI";
+                type = "5";
                 break;
             case NETWORK_CLASS_2_G:
-                type = "2G";
+                type = "1";
                 break;
             case NETWORK_CLASS_3_G:
-                type = "3G";
+                type = "2";
                 break;
             case NETWORK_CLASS_4_G:
-                type = "4G";
+                type = "3";
                 break;
             case NETWORK_CLASS_UNKNOWN:
-                type = "未知";
+                type = "-1";
                 break;
         }
         networkType = type;
@@ -1022,6 +1017,7 @@ public class NativeInterface {
     // wifi信号强度
     @NonNull
     public static String getDeviceSignalLevel() {
+        Log.v("NativeInterface", "signalLevel:" + String.valueOf(signalLevel));
         return String.valueOf(signalLevel);
     }
 
@@ -1129,19 +1125,28 @@ public class NativeInterface {
             ((AppActivity) myContext).runOnGLThread(new Runnable(){
                 @Override
                 public void run() {
-                    if (gScreenCallFuncHandler != -1){
-                        //Cocos2dxLuaJavaBridge.callLuaFunctionWithString(gScreenCallFuncHandler, finalScreenEvent);
-                    }
+                    final String evalStr = "cuckoo.NativeInterFace.onLockNotify(" + finalScreenEvent + ")";
+                    Log.v("NativeInterface", "锁屏通知:" + evalStr);
+                    Cocos2dxJavascriptJavaBridge.evalString(evalStr);
                 }
             });
         }
     }
 
-    public static void registerScreenListener(final int handler) {
-        if (gScreenCallFuncHandler != -1){
-            //Cocos2dxLuaJavaBridge.releaseLuaFunction(gScreenCallFuncHandler);
-        }
-        gScreenCallFuncHandler = handler;
+    private static void setWindowBrightness(int brightness) {
+        Log.v("NativeInterface", "设置电量:" + brightness);
+//        Window window = mActivity.getWindow();
+//        WindowManager.LayoutParams lp = window.getAttributes();
+//        lp.screenBrightness = brightness / 255.0f;
+//        window.setAttributes(lp);
     }
+
+    private static int getScreenBrightness() {
+        ContentResolver contentResolver = mActivity.getContentResolver();
+        int defVal = 125;
+        return Settings.System.getInt(contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS, defVal);
+    }
+
 
 }

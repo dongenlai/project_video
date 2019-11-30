@@ -83,6 +83,48 @@ return e = i([ s ], e);
 o.default = a;
 cc._RF.pop();
 }, {} ],
+BackgroundAdapter: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "aacd5mWkUxNTZ4fZ71kvSOg", "BackgroundAdapter");
+var n = this && this.__extends || function() {
+var t = function(e, o) {
+return (t = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(e, o);
+};
+return function(e, o) {
+t(e, o);
+function n() {
+this.constructor = e;
+}
+e.prototype = null === o ? Object.create(o) : (n.prototype = o.prototype, new n());
+};
+}(), i = this && this.__decorate || function(t, e, o, n) {
+var i, r = arguments.length, s = r < 3 ? e : null === n ? n = Object.getOwnPropertyDescriptor(e, o) : n;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, n); else for (var c = t.length - 1; c >= 0; c--) (i = t[c]) && (s = (r < 3 ? i(s) : r > 3 ? i(e, o, s) : i(e, o)) || s);
+return r > 3 && s && Object.defineProperty(e, o, s), s;
+};
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var r = cc._decorator, s = r.ccclass, c = (r.property, function(t) {
+n(e, t);
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+e.prototype.onLoad = function() {
+var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
+this.node.scale = Math.max(cc.view.getCanvasSize().width / e, cc.view.getCanvasSize().height / o);
+};
+return e = i([ s ], e);
+}(cc.Component));
+o.default = c;
+cc._RF.pop();
+}, {} ],
 BaseNode: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "149991NTmtD/47HPe3oisiY", "BaseNode");
@@ -227,6 +269,49 @@ i([ c ], e.prototype, "transDuration", void 0);
 return e = i([ s ], e);
 }(cc.Component);
 o.default = a;
+cc._RF.pop();
+}, {} ],
+ContentAdapter: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "6bb71CA5EtGWbHeNFscP++E", "ContentAdapter");
+var n = this && this.__extends || function() {
+var t = function(e, o) {
+return (t = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(e, o);
+};
+return function(e, o) {
+t(e, o);
+function n() {
+this.constructor = e;
+}
+e.prototype = null === o ? Object.create(o) : (n.prototype = o.prototype, new n());
+};
+}(), i = this && this.__decorate || function(t, e, o, n) {
+var i, r = arguments.length, s = r < 3 ? e : null === n ? n = Object.getOwnPropertyDescriptor(e, o) : n;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, n); else for (var c = t.length - 1; c >= 0; c--) (i = t[c]) && (s = (r < 3 ? i(s) : r > 3 ? i(e, o, s) : i(e, o)) || s);
+return r > 3 && s && Object.defineProperty(e, o, s), s;
+};
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var r = cc._decorator, s = r.ccclass, c = (r.property, function(t) {
+n(e, t);
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+e.prototype.onLoad = function() {
+var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
+this.node.width = this.node.width * (cc.view.getCanvasSize().width / e);
+this.node.height = this.node.height * (cc.view.getCanvasSize().height / o);
+};
+return e = i([ s ], e);
+}(cc.Component));
+o.default = c;
 cc._RF.pop();
 }, {} ],
 Game: [ function(t, e, o) {
@@ -420,6 +505,8 @@ this._retry(3);
 };
 e.prototype.onLoad = function() {
 this._onAlredyUpToDate();
+cc.loader.loadRes("icon", cc.SpriteFrame);
+cc.loader.loadRes("icon", cc.SpriteFrame);
 };
 e.prototype.onDestroy = function() {
 if (cc.sys.isNative && this.hotUpdate) {
@@ -550,29 +637,15 @@ this.videoScript = o;
 var n = cc.instantiate(this.noticePrefab);
 n.parent = this.node;
 this.noticeScript = n.getComponent(s.default);
-this.touchText = cc.find("touch_text", this.node);
-this.node.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
 };
 e.prototype.onTouch = function() {
-this.touchText.active && cc.director.loadScene("Game");
+console.log("touch-touch");
 };
 e.prototype.onWxClick = function() {
-var t = this;
-cuckoo.WxInterFace.wXLogin(function(e, o) {
-if (0 == e) {
-var n = {
-code: o
-};
-console.log("微信登陆成功" + e + " code: " + o);
-cuckoo.Net.httpPostHs("/weChatLogin/v1", n, {
-postEventName: "wxLogin",
-postEventNode: t.node
-});
-}
-});
+console.log("-------==" + cuckoo.NativeInterFace.getServiceCompany());
 };
 e.prototype.onYkClick = function() {
-this.onGoGame();
+console.log("-----net--==" + cuckoo.NativeInterFace.getCurrentBattery());
 };
 e.prototype.onAutoLogin = function() {
 console.log("自动登陆！！");
@@ -902,8 +975,7 @@ e.prototype.onShare = function() {};
 e.prototype.onLightSlider = function(t, e) {
 var o = cc.find("silder_progress", t.node);
 o && (o.width = t.progress * t.node.width);
-cc.sys.os == cc.sys.OS_ANDROID ? jsb.reflection.callStaticMethod("com/cuckoo/game/BrightnessTools", "setCurWindowBrightness", "(I)V", 255 * t.progress) : (cc.sys.os, 
-cc.sys.OS_IOS);
+cuckoo.NativeInterFace.setWindowBrightness(t.progress);
 };
 e.prototype.onMusicSlider = function(t, e) {
 var o = cc.find("silder_progress", t.node);
@@ -1317,4 +1389,4 @@ return e = i([ s ], e);
 o.default = a;
 cc._RF.pop();
 }, {} ]
-}, {}, [ "AudioMng", "ButtonScale", "BaseNode", "Game", "Load", "Login", "Notice", "Record", "Setting", "Update", "VideoSplitUtil", "VideoUtil" ]);
+}, {}, [ "AudioMng", "BackgroundAdapter", "ButtonScale", "ContentAdapter", "BaseNode", "Game", "Load", "Login", "Notice", "Record", "Setting", "Update", "VideoSplitUtil", "VideoUtil" ]);

@@ -30,8 +30,9 @@
 #import "RootViewController.h"
 #import "SDKWrapper.h"
 #import "platform/ios/CCEAGLView-ios.h"
-
-
+#import "wxInterface.h"
+#import "WXApiManager.h"
+#import "WXApi.h"
 
 using namespace cocos2d;
 
@@ -75,7 +76,11 @@ Application* app = nullptr;
         [window setRootViewController:_viewController];
     }
     
+    
     [window makeKeyAndVisible];
+    
+    //初始化微信ＳＤＫ
+    [[wxInterface shareInstance] initWeiXinSDK:_viewController];
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
@@ -83,6 +88,18 @@ Application* app = nullptr;
     app->start();
     
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray<id<UIUserActivityRestoring>> * __nullable restorableObjects))restorationHandler {
+    return [WXApi handleOpenUniversalLink:userActivity delegate:[WXApiManager sharedManager]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

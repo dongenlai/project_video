@@ -96,10 +96,13 @@ export default class Login extends BaseNode {
 
     private onWxClick():void{
         const self = this;
+        console.log("-------==" + cuckoo.NativeInterFace.getServiceCompany());
+        return
+        
         cuckoo.WxInterFace.wXLogin(function(retCode, code){
             console.log("微信登陆成功:"+ retCode + " code: ");
             // cc.loader.getRes("icon")
-            cuckoo.WxInterFace.doShare(1, "www.baidu.com", "荒野客栈", "测试环节",jsb.fileUtils.getWritablePath() + "a.png");
+            // cuckoo.WxInterFace.doShare(1, "www.baidu.com", "荒野客栈", "测试环节", jsb.fileUtils.getWritablePath() + "a.png");
             return
             if (parseInt(retCode) == 0) {
                 const data = { code:code };
@@ -111,9 +114,7 @@ export default class Login extends BaseNode {
     }
 
     private onYkClick():void{
-        cuckoo.PubUtil.captureScreen(this.node, jsb.fileUtils.getWritablePath() + "a.png");
-
-        // this.onGoGame();
+        this.onGoGame();
         return
         const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
         // if (_locaData.token) {

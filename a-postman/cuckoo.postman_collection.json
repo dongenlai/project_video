@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "07b0798f-fb7e-4fae-b1ba-954b6c54437d",
+		"name": "cuckoo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "base",
+			"item": [
+				{
+					"name": "生成游客并登陆",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/guestGenerateAndLogin/v1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"guestGenerateAndLogin",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "自动登陆",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/autoLogin/v1?token={{token}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"autoLogin",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "退出登陆",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/loginOut/v1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loginOut",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "微信登陆",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "appKey",
+								"value": "wechatDefaultLoginConf",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/weChatLogin/v1?code=123456",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weChatLogin",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "123456"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "player",
+			"item": [
+				{
+					"name": "玩家信息",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/playerInfo/v1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"playerInfo",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "system",
+			"item": [
+				{
+					"name": "公告信息",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/affiche/v1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"affiche",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "game",
+			"item": [
+				{
+					"name": "剧情接口list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/scenarioList/v1?sid=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"scenarioList",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "sid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "剧情详情",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/scenarioInfo/v1?id=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"scenarioInfo",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "pay",
+			"item": [
+				{
+					"name": "商城接口",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/goodsList/v1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"goodsList",
+								"v1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "预下单",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/preOrder/v1?goodsId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"preOrder",
+								"v1"
+							],
+							"query": [
+								{
+									"key": "goodsId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

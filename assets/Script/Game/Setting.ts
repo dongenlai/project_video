@@ -21,11 +21,8 @@ export default class Setting extends cc.Component {
         const silder_progress = cc.find("silder_progress", sender.node);
         if (silder_progress) 
             silder_progress.width = sender.progress * sender.node.width;
-        //设置屏幕亮度 
-        if (cc.sys.os == cc.sys.OS_ANDROID) {
-            jsb.reflection.callStaticMethod("com/cuckoo/game/BrightnessTools", "setCurWindowBrightness", "(I)V",  sender.progress * 255);
-        } else if (cc.sys.os == cc.sys.OS_IOS) {
-        }   
+
+        cuckoo.NativeInterFace.setWindowBrightness(sender.progress );
     }
 
     public onMusicSlider(sender:cc.Slider, eventType:number):void{
