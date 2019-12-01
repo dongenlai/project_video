@@ -43,12 +43,19 @@ export default class Game extends BaseNode {
         this.showToast("故事线功能敬请期待！", 5);
     }
 
+    //章节入口
     public onChapter():void{
         this.showToast("章节功能敬请期待！", 5);
     }
 
+    //解锁章节
     public onLockedChapter():void{
         this.showToast("解锁章节章节功能敬请期待！", 5);
+    }
+
+    //立即行动
+    public onAction():void{
+        this.showToast("立即行动功能敬请期待！", 5);
     }
 
     //战绩入口

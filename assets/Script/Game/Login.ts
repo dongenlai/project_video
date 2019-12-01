@@ -114,9 +114,7 @@ export default class Login extends BaseNode {
     }
 
     private onYkClick():void{
-
-        console.log("-------==" + cuckoo.NativeInterFace.getVersionCode());
-        // this.onGoGame();
+        this.onGoGame();
         return
         const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
         // if (_locaData.token) {

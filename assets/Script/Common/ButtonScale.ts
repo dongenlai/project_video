@@ -7,37 +7,35 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class ButtonScale extends cc.Component {
     @property
-    pressedScale:number = 1;   //按压缩放
-
+    pressedScale:number = 0.95;   //按压缩放
     @property
-    transDuration:number = 0;  //持续时间
-
-    initScale:number = 0;
-    button:cc.Button = null;
-    scaleDownAction:cc.Action = null;
-    scaleUpAction:cc.Action = null;
+    transDuration:number = 0.1;  //持续时间
 
     onLoad () {
         var self = this;
-        var audioMng = cc.find('Menu/AudioMng') || cc.find('Game/AudioMng')
+
+        //按钮上面挂在音效脚本todo
+        var audioMng = cc.find('Menu/AudioMng') || cc.find('Game/AudioMng');
+
         if (audioMng) {
             audioMng = audioMng.getComponent('AudioMng');
         }
-        self.initScale = this.node.scale;
-        self.button = self.getComponent(cc.Button);
-        self.scaleDownAction = cc.scaleTo(self.transDuration, self.pressedScale);
-        self.scaleUpAction = cc.scaleTo(self.transDuration, self.initScale);
+
+        const initScale = this.node.scale;
+        const scaleDownAction = cc.scaleTo(self.transDuration, self.pressedScale);
+        const scaleUpAction = cc.scaleTo(self.transDuration, initScale);
         
         function onTouchDown (event) {
             this.stopAllActions();
             // if (audioMng) audioMng.playButton();
-            this.runAction(self.scaleDownAction);
+            this.runAction(scaleDownAction);
         }
 
         function onTouchUp (event) {
             this.stopAllActions();
-            this.runAction(self.scaleUpAction);
+            this.runAction(scaleUpAction);
         }
+
         this.node.on('touchstart', onTouchDown, this.node);
         this.node.on('touchend', onTouchUp, this.node);
         this.node.on('touchcancel', onTouchUp, this.node);

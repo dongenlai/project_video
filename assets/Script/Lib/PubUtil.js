@@ -82,9 +82,6 @@ var cuckoo;
                 return {};
             }
             return json;
-        },
-        //加载头像
-        loadHeadImage: function (path, target, callBack) {
         }
     };
 })(cuckoo || (cuckoo = {}));

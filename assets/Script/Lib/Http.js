@@ -15,17 +15,16 @@ var cuckoo;
         }
         //下载图片
         Net.downloadPic = function (url, callback) {
-            // if (!cc.sys.isNative) {
-            //     callback(url);
-            //     return;
-            // }
+            if (!cc.sys.isNative) {
+                callback(url);
+                return;
+            }
             if (cc.sys.os == cc.sys.OS_IOS) {
                 callback(url);
                 return;
             }
             var dirpath = jsb.fileUtils.getWritablePath() + 'headimg/';
             var filepath = dirpath + cuckoo.Base64.encode(url) + '.png';
-            console.log("filepath: " + filepath);
             if (jsb.fileUtils.isFileExist(filepath)) {
                 callback(filepath);
                 return;
@@ -148,7 +147,7 @@ var cuckoo;
         };
         Net.httpPostHs = function (subUrl, postData, postEventInfo) {
             var header = {
-                "appKey": "wechatDefaultLoginConf",
+                "appKey": cuckoo.GAME.appKey,
                 "Authorization": "Bearer " + cuckoo.curUser.token
             };
             Net.httpPost(cuckoo.GAME.urlHs + subUrl, header, 10 * 1000, postData, postEventInfo);
