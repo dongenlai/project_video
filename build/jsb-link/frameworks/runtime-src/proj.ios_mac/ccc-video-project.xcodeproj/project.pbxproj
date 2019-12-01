@@ -50,6 +50,7 @@
 		653EA79323910224001A275B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653EA79223910224001A275B /* CoreGraphics.framework */; };
 		653EA7952391023A001A275B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653EA7942391023A001A275B /* WebKit.framework */; };
 		653EA79823911D33001A275B /* ZQStatusBarTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 653EA79723911D33001A275B /* ZQStatusBarTool.m */; };
+		653EA79C2392A70C001A275B /* NativeInterFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 653EA79A2392A70C001A275B /* NativeInterFace.m */; };
 		6589AA99238FE70E00BA38F4 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6589AA87238FE70E00BA38F4 /* README.txt */; };
 		6589AA9A238FE70E00BA38F4 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6589AA89238FE70E00BA38F4 /* libWeChatSDK.a */; };
 		6589AA9B238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6589AA8C238FE70E00BA38F4 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm */; };
@@ -166,6 +167,8 @@
 		653EA7942391023A001A275B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		653EA79623911D33001A275B /* ZQStatusBarTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZQStatusBarTool.h; path = ios/ZQStatusBarTool.h; sourceTree = "<group>"; };
 		653EA79723911D33001A275B /* ZQStatusBarTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZQStatusBarTool.m; path = ios/ZQStatusBarTool.m; sourceTree = "<group>"; };
+		653EA79A2392A70C001A275B /* NativeInterFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterFace.m; path = ios/NativeInterFace.m; sourceTree = "<group>"; };
+		653EA79B2392A70C001A275B /* NativeInterFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterFace.h; path = ios/NativeInterFace.h; sourceTree = "<group>"; };
 		6589AA85238FE70E00BA38F4 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		6589AA86238FE70E00BA38F4 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		6589AA87238FE70E00BA38F4 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -436,6 +439,8 @@
 		D45446CC156DE73F00887EB5 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				653EA79B2392A70C001A275B /* NativeInterFace.h */,
+				653EA79A2392A70C001A275B /* NativeInterFace.m */,
 				653EA79623911D33001A275B /* ZQStatusBarTool.h */,
 				653EA79723911D33001A275B /* ZQStatusBarTool.m */,
 				6589AAA32390CDB100BA38F4 /* wxInterface.h */,
@@ -625,6 +630,7 @@
 				D4545227156E28EF00887EB5 /* AppDelegate.cpp in Sources */,
 				509D4AC817EBB2AB00697056 /* main.m in Sources */,
 				6589AA9C238FE70E00BA38F4 /* SendMessageToWXReq+requestWithTextOrMediaMessage.mm in Sources */,
+				653EA79C2392A70C001A275B /* NativeInterFace.m in Sources */,
 				6589AA9E238FE70E00BA38F4 /* UIAlertView+WX.mm in Sources */,
 				6589AAA0238FE70E00BA38F4 /* WXApiManager.mm in Sources */,
 				22CC757121BA5B5C00FBF2F7 /* SDKWrapper.m in Sources */,

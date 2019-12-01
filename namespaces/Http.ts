@@ -4,7 +4,6 @@ namespace cuckoo {
         protected errorCode: number;
         protected errorMsg: string;
         protected retStr: string;
-
         constructor(postEventName:string, errorCode:number, errorMsg:string, retStr:string) {
             this.postEventName = postEventName;
             this.errorCode = errorCode;
@@ -17,11 +16,58 @@ namespace cuckoo {
         //cookie 缓存
         static httpCookie:string = "";
 
-        static httpGet(url:string, cb:Function){
+        //下载图片
+        static downloadPic(url:string, callback:Function){
+            if (!cc.sys.isNative) {
+                callback(url);
+                return;
+            }
+
+            if (cc.sys.os == cc.sys.OS_IOS) {
+                callback(url);
+                return;
+            }
+        
+            let dirpath =  jsb.fileUtils.getWritablePath() + 'headimg/';
+            let filepath = dirpath + cuckoo.Base64.encode(url) + '.png';
+        
+            if( jsb.fileUtils.isFileExist(filepath) ){
+                callback(filepath);
+                return;
+            }
+        
+            let saveFile = function(data){
+                if( data ){
+                    if( !jsb.fileUtils.isDirectoryExist(dirpath) ){
+                        jsb.fileUtils.createDirectory(dirpath);
+                    }
+                    if( jsb.fileUtils.writeDataToFile(  new Uint8Array(data) , filepath) ){
+                        console.log('Remote write file succeed.');
+                        callback(filepath);
+                    }else{
+                        console.log('Remote write file failed!.');
+                    }
+                }else{
+                    console.log('Remote download file failed.');
+                }
+            };
+            Net.httpGet(url, saveFile, true)
+        }
+
+        static httpGet(url:string, cb:Function, loadImage?:boolean){
             var xhr = new XMLHttpRequest();
+            //请求图片的时候用到
+            if (loadImage){
+                xhr.responseType = 'arraybuffer';
+            }
+
             ['abort', 'error', 'timeout'].forEach(function (eventname) {
                 xhr["on" + eventname] = function () {
-                    cb(1, eventname);
+                    if (loadImage){
+                        cb(null);
+                    }else{
+                        cb(1, eventname);
+                    }
                 }
             });
 
@@ -29,8 +75,12 @@ namespace cuckoo {
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
                     var httpStatus = xhr.statusText;
-                    var response = xhr.responseText;
-                    cb(0, httpStatus, response);
+                    var response = loadImage ? xhr.response : xhr.responseText;
+                    if (loadImage){
+                        cb(response);
+                    }else{
+                        cb(0, httpStatus, response);
+                    }
                 }
             };
 
@@ -108,7 +158,7 @@ namespace cuckoo {
 
         static httpPostHs(subUrl:string, postData:any, postEventInfo:any){
             const header = {
-                "appKey": "wechatDefaultLoginConf",
+                "appKey": cuckoo.GAME.appKey,
                 "Authorization": "Bearer " + cuckoo.curUser.token,
             };
             Net.httpPost(cuckoo.GAME.urlHs + subUrl, header, 10 * 1000, postData, postEventInfo);

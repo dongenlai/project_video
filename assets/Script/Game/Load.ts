@@ -107,6 +107,10 @@ export default class Load extends BaseNode {
         //icon 资源分享使用传递到native端全路径
         cc.loader.loadRes("icon", cc.SpriteFrame);
 
+        cuckoo.Net.downloadPic("http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erD6MOUwRKV9NyBAqnoFDTnltzAe2zWOkKxyDOFibVBb1ZV5CaATJwYAuNqZ5sXMBC4c8iacaHDf8RA/132", function(path:string){
+             console.log("===--=--=-=1=path" + path);
+        })
+
         return;
         //@ts-ignore
         if (!window.allreadyUpdate) {

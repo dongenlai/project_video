@@ -96,7 +96,7 @@ export default class Login extends BaseNode {
 
     private onWxClick():void{
         const self = this;
-        console.log("-------==" + cuckoo.NativeInterFace.getServiceCompany());
+        console.log("-------==" + cuckoo.NativeInterFace.openWebURL("http://www.baidu.com"));
         return
         
         cuckoo.WxInterFace.wXLogin(function(retCode, code){
@@ -114,7 +114,9 @@ export default class Login extends BaseNode {
     }
 
     private onYkClick():void{
-        this.onGoGame();
+
+        console.log("-------==" + cuckoo.NativeInterFace.getVersionCode());
+        // this.onGoGame();
         return
         const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
         // if (_locaData.token) {

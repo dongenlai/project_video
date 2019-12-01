@@ -8,6 +8,7 @@ namespace cuckoo {
         NET_WIFI = 5
     }
 
+    //网络状态描述
     const NET_DES = [
         "无网络",
         "2G",
@@ -90,6 +91,46 @@ namespace cuckoo {
             } else if (cc.sys.os == cc.sys.OS_IOS) {
                  jsb.reflection.callStaticMethod(this._className_IOS, "setWindownBrightness:", light);
             }
+         },
+
+         //获取应用包名
+         getPackageName():string{
+            let packageName = ""; 
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                packageName = jsb.reflection.callStaticMethod(this._className_ANDROID, "getPackageName", "()Ljava/lang/String;");
+            } else if (cc.sys.os == cc.sys.OS_IOS) {
+                packageName = jsb.reflection.callStaticMethod("NativeInterFace", "getPackageName");
+            }
+            return packageName;
+         },
+      
+         //获取版本号
+         getVersionCode():string{
+           let verCode:string = "0.0";  
+           if (cc.sys.os == cc.sys.OS_ANDROID) {
+                verCode = jsb.reflection.callStaticMethod(this._className_ANDROID, "getAppVersionName", "()Ljava/lang/String;");
+           } else if (cc.sys.os == cc.sys.OS_IOS) {
+                verCode = jsb.reflection.callStaticMethod("NativeInterFace", "getCurVersion");
+           }
+           return verCode 
+         },
+
+         //复制文案
+         copyStr(str:string){
+           if (cc.sys.os == cc.sys.OS_ANDROID) {
+                jsb.reflection.callStaticMethod(this._className_ANDROID, "copyStr", "(Ljava/lang/String;)V", str);
+           } else if (cc.sys.os == cc.sys.OS_IOS) {
+                jsb.reflection.callStaticMethod("NativeInterFace", "copyToClipboard:", str);
+           }
+         },
+
+         //跳转浏览器
+         openWebURL(url:string){
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                jsb.reflection.callStaticMethod(this._className_ANDROID, "openWebURL", "(Ljava/lang/String;)V", url);
+           } else if (cc.sys.os == cc.sys.OS_IOS) {
+                jsb.reflection.callStaticMethod("NativeInterFace", "openWebURL:", url);
+           }
          }
     }
 }

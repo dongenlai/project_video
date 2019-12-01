@@ -13,19 +13,69 @@ var cuckoo;
     var Net = /** @class */ (function () {
         function Net() {
         }
-        Net.httpGet = function (url, cb) {
+        //下载图片
+        Net.downloadPic = function (url, callback) {
+            // if (!cc.sys.isNative) {
+            //     callback(url);
+            //     return;
+            // }
+            if (cc.sys.os == cc.sys.OS_IOS) {
+                callback(url);
+                return;
+            }
+            var dirpath = jsb.fileUtils.getWritablePath() + 'headimg/';
+            var filepath = dirpath + cuckoo.Base64.encode(url) + '.png';
+            console.log("filepath: " + filepath);
+            if (jsb.fileUtils.isFileExist(filepath)) {
+                callback(filepath);
+                return;
+            }
+            var saveFile = function (data) {
+                if (data) {
+                    if (!jsb.fileUtils.isDirectoryExist(dirpath)) {
+                        jsb.fileUtils.createDirectory(dirpath);
+                    }
+                    if (jsb.fileUtils.writeDataToFile(new Uint8Array(data), filepath)) {
+                        console.log('Remote write file succeed.');
+                        callback(filepath);
+                    }
+                    else {
+                        console.log('Remote write file failed!.');
+                    }
+                }
+                else {
+                    console.log('Remote download file failed.');
+                }
+            };
+            Net.httpGet(url, saveFile, true);
+        };
+        Net.httpGet = function (url, cb, loadImage) {
             var xhr = new XMLHttpRequest();
+            //请求图片的时候用到
+            if (loadImage) {
+                xhr.responseType = 'arraybuffer';
+            }
             ['abort', 'error', 'timeout'].forEach(function (eventname) {
                 xhr["on" + eventname] = function () {
-                    cb(1, eventname);
+                    if (loadImage) {
+                        cb(null);
+                    }
+                    else {
+                        cb(1, eventname);
+                    }
                 };
             });
             // Special event
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
                     var httpStatus = xhr.statusText;
-                    var response = xhr.responseText;
-                    cb(0, httpStatus, response);
+                    var response = loadImage ? xhr.response : xhr.responseText;
+                    if (loadImage) {
+                        cb(response);
+                    }
+                    else {
+                        cb(0, httpStatus, response);
+                    }
                 }
             };
             // 10 seconds for timeout

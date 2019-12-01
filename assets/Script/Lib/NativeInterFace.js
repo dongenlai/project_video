@@ -9,6 +9,7 @@ var cuckoo;
         NET_TYPE[NET_TYPE["NET_4G"] = 3] = "NET_4G";
         NET_TYPE[NET_TYPE["NET_WIFI"] = 5] = "NET_WIFI";
     })(NET_TYPE || (NET_TYPE = {}));
+    //网络状态描述
     var NET_DES = [
         "无网络",
         "2G",
@@ -89,6 +90,46 @@ var cuckoo;
             }
             else if (cc.sys.os == cc.sys.OS_IOS) {
                 jsb.reflection.callStaticMethod(this._className_IOS, "setWindownBrightness:", light);
+            }
+        },
+        //获取应用包名
+        getPackageName: function () {
+            var packageName = "";
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                packageName = jsb.reflection.callStaticMethod(this._className_ANDROID, "getPackageName", "()Ljava/lang/String;");
+            }
+            else if (cc.sys.os == cc.sys.OS_IOS) {
+                packageName = jsb.reflection.callStaticMethod("NativeInterFace", "getPackageName");
+            }
+            return packageName;
+        },
+        //获取版本号
+        getVersionCode: function () {
+            var verCode = "0.0";
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                verCode = jsb.reflection.callStaticMethod(this._className_ANDROID, "getAppVersionName", "()Ljava/lang/String;");
+            }
+            else if (cc.sys.os == cc.sys.OS_IOS) {
+                verCode = jsb.reflection.callStaticMethod("NativeInterFace", "getCurVersion");
+            }
+            return verCode;
+        },
+        //复制文案
+        copyStr: function (str) {
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                jsb.reflection.callStaticMethod(this._className_ANDROID, "copyStr", "(Ljava/lang/String;)V", str);
+            }
+            else if (cc.sys.os == cc.sys.OS_IOS) {
+                jsb.reflection.callStaticMethod("NativeInterFace", "copyToClipboard:", str);
+            }
+        },
+        //跳转浏览器
+        openWebURL: function (url) {
+            if (cc.sys.os == cc.sys.OS_ANDROID) {
+                jsb.reflection.callStaticMethod(this._className_ANDROID, "openWebURL", "(Ljava/lang/String;)V", url);
+            }
+            else if (cc.sys.os == cc.sys.OS_IOS) {
+                jsb.reflection.callStaticMethod("NativeInterFace", "openWebURL:", url);
             }
         }
     };

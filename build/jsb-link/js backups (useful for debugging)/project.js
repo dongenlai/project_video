@@ -642,10 +642,10 @@ e.prototype.onTouch = function() {
 console.log("touch-touch");
 };
 e.prototype.onWxClick = function() {
-console.log("-------==" + cuckoo.NativeInterFace.getServiceCompany());
+console.log("-------==" + cuckoo.NativeInterFace.openWebURL("http://www.baidu.com"));
 };
 e.prototype.onYkClick = function() {
-console.log("-----net--==" + cuckoo.NativeInterFace.getCurrentBattery());
+console.log("-------==" + cuckoo.NativeInterFace.getVersionCode());
 };
 e.prototype.onAutoLogin = function() {
 console.log("自动登陆！！");

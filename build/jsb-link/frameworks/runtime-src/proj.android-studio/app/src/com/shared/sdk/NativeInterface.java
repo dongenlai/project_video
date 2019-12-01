@@ -67,9 +67,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.view.WindowManager;
-import android.view.Window;
 import android.content.ContentResolver;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.app.ActivityManager;
+import android.content.pm.ApplicationInfo;
+import android.graphics.drawable.Drawable;
 
 
 public class NativeInterface {
@@ -371,6 +373,79 @@ public class NativeInterface {
         }
         return versionName;
     }
+
+    /**
+     * 获取当前应用程序的包名
+     * @param context 上下文对象
+     * @return 返回包名
+     */
+    public static String getPackageName(Context context) {
+        //当前应用pid
+        int pid = android.os.Process.myPid();
+        //任务管理类
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        //遍历所有应用
+        List<ActivityManager.RunningAppProcessInfo> infos = manager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo info : infos) {
+            if (info.pid == pid)//得到当前应用
+                return info.processName;//返回包名
+        }
+        return "";
+    }
+    /**
+     * 获取程序 图标
+     * @param context
+     * @param packname 应用包名
+     * @return
+     */
+    public Drawable getAppIcon(Context context,String packname){
+        try {
+            //包管理操作管理类
+            PackageManager pm = context.getPackageManager();
+            //获取到应用信息
+            ApplicationInfo info = pm.getApplicationInfo(packname, 0);
+            return info.loadIcon(pm);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * 获取程序的版本号
+     * @param context
+     * @param packname
+     * @return
+     */
+    public String getAppVersion(Context context,String packname){
+        //包管理操作管理类
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo packinfo = pm.getPackageInfo(packname, 0);
+            return packinfo.versionName;
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packname;
+    }
+    /**
+     * 获取程序的名字
+     * @param context
+     * @param packname
+     * @return
+     */
+    public String getAppName(Context context,String packname){
+        //包管理操作管理类
+        PackageManager pm = context.getPackageManager();
+        try {
+            ApplicationInfo info = pm.getApplicationInfo(packname, 0);
+            return info.loadLabel(pm).toString();
+        } catch (NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return packname;
+    }
+
 
     public static void openWebURL(String url) {
         Log.v("NativeInterface", "openWebURL:" + url);
