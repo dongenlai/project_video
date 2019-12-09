@@ -59,19 +59,13 @@ return c;
 cc.sys.os, cc.sys.OS_IOS;
 return !1;
 },
-doOrder: function() {
-if (cc.sys.os == cc.sys.OS_ANDROID) ; else if (cc.sys.os == cc.sys.OS_IOS) {
-var c = JSON.stringify({
-appid: "wxadf0ba8a4e984ce8",
-noncestr: "87ff30748e52fd4941b3739f53f00c7a",
-package: "Sign=WXPay",
-partnerid: 1900006771,
-prepayid: "wx24220244985843f7d06b1fbb1961990632",
-sign: "243A1394B579F473F506BB0F243BE511",
-timestamp: 1574604165
-});
-jsb.reflection.callStaticMethod("wxInterface", "doOrder:withInfo:", c, "orderId");
-}
+doOrder: function(s) {
+var t = c.Base64.decode(s);
+JSON.stringify(t);
+cc.sys.os == cc.sys.OS_ANDROID ? jsb.reflection.callStaticMethod(this._className, "doOrder", "(Ljava/lang/String;)V", s) : cc.sys.os == cc.sys.OS_IOS && jsb.reflection.callStaticMethod("wxInterface", "doOrder:withInfo:", s, "orderId");
+},
+payResNotify: function(c) {
+console.log("微信支付通知");
 },
 doShare: function(c, s, t, e, n) {
 console.log("执行分享:type: " + c + " url:" + s + " title:" + t + " description: " + e + " iconpath: " + n);

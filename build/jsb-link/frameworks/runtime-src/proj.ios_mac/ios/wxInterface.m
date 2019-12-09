@@ -70,50 +70,29 @@ static wxInterface* _instance = nil;
 
 /*
  * fun: 微信下定单
- * @param {int} goodsId 物品编号,如果是游戏豆，goodsId为-1
- * @param {int} channelId 支付渠道号 1为支付宝,2为微信,3为易宝银行卡支付,4为渠道的短代
- * @param {int} goodsCount 购买数量(如果有赠送不包含赠送数量)
- * @param {number}	totalValue 总价值
- * @param {String}	goodsDesc 物品描述，没有传空符串
- * @param {String} otherParams 其他被充参数,对于易宝支付这里可以填银行卡账号(银行卡账号也可以不填)
- * 固定写死包名，方法与安卓统一
  */
-+ (BOOL)doOrder:(NSString *)ordId channelld: (NSString *)chId payInfo64: (NSString *)pInfo thirdOrderId: (NSString*)trdOId
+
++ (BOOL)doOrder:(NSString *) data withInfo:(NSString *)orderId;
 {
-    if( [@"" isEqual:pInfo]){
-        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"支付失败" message:pInfo delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alter show];
-        [alter release];
-        return false;
-    }
-    NSString *newOrdId = [NSString stringWithFormat:@"%@",ordId];
-    NSString *newChId = [NSString stringWithFormat:@"%@",chId];
-    NSString *newTrdOId = [NSString stringWithFormat:@"%@",trdOId];
-    
-    [[wxInterface shareInstance] setLastOrderId:newOrdId];//保存当前微信所下的定单ID
-    NSString *newInfo = [NSString stringWithFormat:@"%@",pInfo];
-    NSData* dataFromString = [[NSData alloc] initWithBase64EncodedString:pInfo options:0];
-    NSString* retStr = [[NSString alloc] initWithData:dataFromString encoding:NSASCIIStringEncoding];
-    NSLog(@"serviceRetStr:%@",retStr);
+   
+    NSData* dataFromString = [[NSData alloc] initWithBase64EncodedString:data options:0];
     NSDictionary *dict;
     NSError* error = nil;
     dict = [NSJSONSerialization JSONObjectWithData: dataFromString
-                                              options: NSJSONReadingMutableContainers
-                                                error: &error];
-    if (error)
-    {
-        NSLog(@"Error: %@",error);
-        return false;
-    }
+                                           options: NSJSONReadingMutableContainers
+                                             error: &error];
+    NSLog(@"微信支付： %@", dict);
+    int ValueString = [[dict objectForKey:@"timestamp"] intValue];
     //调起微信支付
     PayReq* req             = [[[PayReq alloc] init]autorelease];
-    req.partnerId           = [dict objectForKey:@"partnerId"];
-    req.prepayId            = [dict objectForKey:@"prepayId"];
-    req.nonceStr            = [dict objectForKey:@"nonceStr"];
-    req.timeStamp           = [dict objectForKey:@"timeStamp"];
+    req.partnerId           = [dict objectForKey:@"partnerid"];
+    req.prepayId            = [dict objectForKey:@"prepayid"];
+    req.nonceStr            = [dict objectForKey:@"noncestr"];
+    req.timeStamp           = ValueString;
     req.sign                = [dict objectForKey:@"sign"];
     req.package              = @"Sign=WXPay";
-    [WXApi sendReq:req];
+    
+    [WXApi sendReq:req completion:NULL];
     return true;
 }
 

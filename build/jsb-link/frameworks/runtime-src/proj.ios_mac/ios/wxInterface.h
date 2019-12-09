@@ -19,9 +19,7 @@
 - (BOOL) isBlankString:(NSString *)string;
 
 + (UIImage *)thumbnailWithImage:(UIImage *)image size:(CGSize)asize;
-+ (BOOL)doOrder:(NSString *)ordId channelld: (NSString *)chId payInfo64: (NSString *)pInfo thirdOrderId: (NSString*)trdOId;
-
-
++ (BOOL)doOrder:(NSString *)productID withInfo:(NSString *)orderId;
 + (void)doShare:(NSString *)pathName title: (NSString *)title url: (NSString *)url description: (NSString *)description flag: (NSString *)flag;
 
 @end

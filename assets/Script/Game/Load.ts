@@ -127,10 +127,10 @@ export default class Load extends BaseNode {
         //现在热跟新流程
         // this.doUpdateProcess();
         // 加载视频资源
-        cc.loader.loadRes("json/video_try_play", (err, jsonAsset)=>{
-            const json = jsonAsset.json || {}
-            cc.loader.loadResDir("video/part1/", this._progressCallback.bind(this), this._completeCallback.bind(this));
-        });
+        // cc.loader.loadRes("json/video_try_play", (err, jsonAsset)=>{
+        //     const json = jsonAsset.json || {}
+        //     cc.loader.loadResDir("video/part1/", this._progressCallback.bind(this), this._completeCallback.bind(this));
+        // });
 
     }
 

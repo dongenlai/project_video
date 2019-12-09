@@ -10,8 +10,9 @@ namespace cuckoo {
            appSecret:"51e282f98ee3473d767de83054bcb452"
         },
         //游戏地址{外网, 内网}
-        urlHs: "http://172.27.121.134:9083/api",  
+        urlHs: "http://api.bjrethinks.com:8083/api",  
         appKey: "wechatDefaultLoginConf",
+        
         //运行状态{debug: true or false} 
         mode: false
     }

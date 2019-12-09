@@ -3,6 +3,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Setting extends cc.Component {
     onLoad () {
+       
+        // console.log("contentx" +  cc.find("content", this.node).x);
     }
     
     start () {

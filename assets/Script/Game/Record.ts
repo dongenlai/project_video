@@ -75,7 +75,7 @@ export default class Record extends BaseNode {
         const rescuePanel = cc.find("rescuePanel", bg);
         this.lastPanel = rescuePanel;
         //营救榜item
-        this.rescuePanel_Item = cc.find("rescuePanel_Item", rescuePanel);
+        this.rescuePanel_Item = cc.find("rescuePanel_Item", this.node);
         const rescueList = cc.find("rescueList", rescuePanel);
         this.rescueListContent = cc.find("view/content", rescueList);
         //点赞榜Panel 
@@ -114,7 +114,7 @@ export default class Record extends BaseNode {
 
         const thumbsList = cc.find("thumbsList", thumbsPanel);
         this.thumbsListContent = cc.find("view/content", thumbsList);
-        this.thumbsListContentItem = cc.find("thumbList_Item", thumbsPanel);
+        this.thumbsListContentItem = cc.find("thumbList_Item", this.node);
     }
 
     start(){
@@ -178,12 +178,13 @@ export default class Record extends BaseNode {
 
     //营救列表刷新
     private refreshRescueList():void{
+        this.rescueListContent.removeAllChildren();
         this.rescueListContent.height = 10 * (this.rescuePanel_Item.height + this.spacing) + this.spacing; 
         for(let i = 0;i < 10; i ++){
             const Item = cc.instantiate(this.rescuePanel_Item);
             Item.active = true;
             this.rescueListContent.addChild(Item);
-            Item.setPosition(-this.rescueListContent.width/2, 0 - Item.height * i - this.spacing * (i + 1));
+            Item.setPosition(0, 0 - Item.height * i - this.spacing * (i + 1));
         }
     }
 
@@ -278,7 +279,7 @@ export default class Record extends BaseNode {
             const Item = cc.instantiate(this.thumbsListContentItem);
             Item.active = true;
             this.thumbsListContent.addChild(Item);
-            Item.setPosition(-this.thumbsListContent.width/2, 0 - Item.height * i - this.spacing * (i + 1));
+            Item.setPosition(0, 0 - Item.height * i - this.spacing * (i + 1));
         }
     }
 

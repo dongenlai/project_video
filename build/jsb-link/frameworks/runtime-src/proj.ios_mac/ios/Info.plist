@@ -11,7 +11,7 @@
     <key>CFBundleIcons~ipad</key>
     <dict/>
     <key>CFBundleIdentifier</key>
-    <string>com.cuckoo.videogame</string>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
@@ -32,6 +32,16 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>wxadf0ba8a4e984ce8</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>zhifubao</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>cuckoo_alipay</string>
         </array>
       </dict>
     </array>

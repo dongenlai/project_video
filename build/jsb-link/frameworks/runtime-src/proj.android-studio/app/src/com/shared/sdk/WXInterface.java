@@ -30,7 +30,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import android.os.Bundle;
-import java.io.UnsupportedEncodingException;
+import com.cuckoo.game.alipay.Base64;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import org.json.JSONObject;
+import org.cocos2dx.javascript.ConstString;
 
 public class WXInterface {
     private static Activity mActivity = null;
@@ -130,6 +133,8 @@ public class WXInterface {
 
     public static void setWXAppIDByClient(String appID){
         Log.v("WXInterface", "appID:" + appID);
+        ConstString.wxAppID = appID;
+
         wxApi = WXAPIFactory.createWXAPI(mActivity, appID, true);
         APP_ID = appID;
         wxApi.registerApp(appID);
@@ -263,7 +268,7 @@ public class WXInterface {
         wxApi.sendReq(req);
     }
 
-    //处理微信环节(登陆、分享、支付后续集合支付宝)
+    //处理微信环节(登陆、分享、支付)
     public static void processIntent(Intent intent) {
         final Bundle bundle = intent.getExtras();
         String from = bundle.getString("from");
@@ -274,13 +279,15 @@ public class WXInterface {
                 AppActivity.app.runOnGLThread(new Runnable() {
                     @Override
                     public void run() {
-                       //todo分享结果回调
+                        final String evalStr = "cuckoo.WxInterFace.wXShareRes(" + shareResult  + ")";
+                        Cocos2dxJavascriptJavaBridge.evalString(evalStr);
                     }
                 });
             } else if ("WX_Login".equals(from)) {
                 int res = bundle.getInt("result");
                 String state = bundle.getString("state") == null ? "" : bundle.getString("state");
                 String code = bundle.getString("code") == null ? "" : bundle.getString("code");
+
                 final String evalStr = "cuckoo.WxInterFace.wXLoginRes(" + res + ",\"" + code + "\",\"" + state + "\")";
                 AppActivity.app.runOnGLThread(new Runnable() {
                     public void run() {
@@ -290,7 +297,9 @@ public class WXInterface {
             } else if ("WX_Pay".equals(from)) {
                 AppActivity.app.runOnGLThread(new Runnable() {
                     public void run() {
-                        //todo 支付
+                        final int shareResult = bundle.getInt("result");
+                        final String evalStr = "cuckoo.WxInterFace.payRes(" + shareResult  + ")";
+                        Cocos2dxJavascriptJavaBridge.evalString(evalStr);
                     }
                 });
             }
@@ -355,6 +364,30 @@ public class WXInterface {
         }
     }
 
+    //微信支付
+    public static void doOrder(final String resCode){
+        try {
+            byte[] base = Base64.decode(resCode);
+            String str = new String(base);
+            JSONObject json = new JSONObject(str);
+
+            PayReq req = new PayReq();
+            req.appId			= json.getString("appid");
+            req.partnerId		= json.getString("partnerid");
+            req.prepayId		= json.getString("prepayid");
+            req.nonceStr		= json.getString("noncestr");
+            req.timeStamp		= json.getString("timestamp");
+            req.packageValue	= json.getString("package");
+            req.sign			= json.getString("sign");
+            req.extData			= "app data";          // optional
+            wxApi.sendReq(req);
+
+        }catch(Exception e){
+           Log.e("WXInterface", "异常报错-doOrder-wx"+e.getMessage());
+       }
+    }
+
+    //分享到朋友圈
     public static void shareURLToWXPYQ(final String url, final String title, final String description, final String iconpath) {
         Log.v("WXInterface", "url:" + url + " title:" + title + " description:" + description);
         WXWebpageObject webpage = new WXWebpageObject();
@@ -375,6 +408,7 @@ public class WXInterface {
         wxApi.sendReq(req);
     }
 
+    //分享文字
     public static void shareText(final String text, final String shareType) {
         WXTextObject textObject = new WXTextObject();
         textObject.text = text;

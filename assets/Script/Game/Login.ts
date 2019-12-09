@@ -3,6 +3,9 @@ import Notice from "./Notice";
 import BaseNode from "./BaseNode";
 const {ccclass, property} = cc._decorator;
 
+const LOGIN_REFRESH_TOKEN = 40001; //调用自动登陆 
+const LOGIN_ERROW_LOGIN = 41006;   //跳转到登陆页面
+
 @ccclass
 export default class Login extends BaseNode {
     //视频组件
@@ -23,7 +26,6 @@ export default class Login extends BaseNode {
         //调用基类start
         super.start(["guestLogin", "wxLogin", "autoLogin", "notice"], this.onHttpEvent);
         // this.doRequestNotice();
-        // cc.director.loadScene("Game");
     }
 
     private doRequestNotice():void{
@@ -34,11 +36,24 @@ export default class Login extends BaseNode {
     onHttpEvent(data:any){
         const eventName = data.postEventName;
         const errorCode = data.errorCode;
+        const xErrorMsg = data.errorMsg || ""
+
         if (errorCode != 0) {
-            this.showToast("http数据接口访问出错,eventName为" + "(" + eventName + ")", 5);
+            this.showToast("http数据接口访问出错,eventName:" + eventName  + " errmsg:" + xErrorMsg, 5);
             return;
         }
         const retStr = cuckoo.PubUtil.string2Obj(data.retStr);
+        if (retStr.code == LOGIN_REFRESH_TOKEN){        //刷新token重新登陆 
+            this.onAutoLogin();
+            return;
+        }else if(retStr.code == LOGIN_ERROW_LOGIN){     //清除缓存
+            cuckoo.PubUtil.removeItemInLocalDataJson("localUser");
+            return
+        }else if(retStr.code && retStr.code != 10000){
+            this.showToast(retStr.message + "(" + retStr.code + ")", 5);
+            return;
+        }
+
         switch(eventName){
             case "wxLogin":
                 this.onLoginSuccess(retStr);
@@ -58,18 +73,19 @@ export default class Login extends BaseNode {
     }
 
     private onNoticeSuccess(json:any):void{
-        console.log("----1111----" + JSON.stringify(json));
+        console.log("公告内容获取成功" + JSON.stringify(json));
     }
 
     private onLoginSuccess(json:any):void{
+       //登陆成功
+        console.log("登陆返回数据" + JSON.stringify(json));
         cuckoo.curUser.baseInfo.readFromJson(json);
         const token = cuckoo.curUser.baseInfo.token;
         //缓存token信息
         if (token) 
             cuckoo.curUser.token = token;
+
         cuckoo.PubUtil.setLocalDataJson("localUser", { "token": token} );
-        //登陆成功
-        console.log("登陆返回数据" + JSON.stringify(json));
         this.onGoGame();
     }
 
@@ -96,39 +112,46 @@ export default class Login extends BaseNode {
 
     private onWxClick():void{
         const self = this;
-        console.log("-------==" + cuckoo.NativeInterFace.openWebURL("http://www.baidu.com"));
-        return
-        
+        if (this.checkIsAutoLogin()) {
+            this.onAutoLogin();
+            return;
+        }
         cuckoo.WxInterFace.wXLogin(function(retCode, code){
             console.log("微信登陆成功:"+ retCode + " code: ");
-            // cc.loader.getRes("icon")
-            // cuckoo.WxInterFace.doShare(1, "www.baidu.com", "荒野客栈", "测试环节", jsb.fileUtils.getWritablePath() + "a.png");
-            return
             if (parseInt(retCode) == 0) {
                 const data = { code:code };
                 cuckoo.Net.httpPostHs("/weChatLogin/v1", data, {postEventName:"wxLogin", postEventNode:self.node});
             }else if(retCode == 1) {
-            }else{
+                // todo
             }
         })
     }
 
-    private onYkClick():void{
-        this.onGoGame();
-        return
+    //检测一下当时是否满足自动登陆
+    private checkIsAutoLogin():boolean{
         const _locaData = cuckoo.PubUtil.getLocalDataJson("localUser");
-        // if (_locaData.token) {
-        //     cuckoo.curUser.token = _locaData.token;
-        //     this.onAutoLogin();
-        // } else {
+        if (_locaData.token) {
+            cuckoo.curUser.token = _locaData.token;
+            return true;
+        }
+        return false;
+    }
+
+    private onYkClick():void{
+        const isAutoLogin = this.checkIsAutoLogin();
+        console.log("isAutoLogin: " + isAutoLogin);
+
+        if (isAutoLogin) {
+            this.onAutoLogin();
+        } else {
            console.log("游客登陆！！")
            cuckoo.Net.httpPostHs("/guestGenerateAndLogin/v1", {}, {postEventName:"guestLogin", postEventNode:this.node});
-        // }
+        }
     }
 
     protected onAutoLogin():void{
         console.log("自动登陆！！")
-        cuckoo.Net.httpPostHs("/guestGenerateAndLogin/v1", {}, {postEventName:"autoLogin", postEventNode:this.node});
+        cuckoo.Net.httpPostHs("/autoLogin/v1", {"token":cuckoo.curUser.token}, {postEventName:"autoLogin", postEventNode:this.node});
     }
 
     showPreLoadPanel(state:boolean):void{
@@ -136,9 +159,8 @@ export default class Login extends BaseNode {
     }
 
     onGoGame(){
-        this.showPreLoadPanel(false);
         cc.director.loadScene("Game");
-
+        // this.showPreLoadPanel(false);
         // this.videoScript.playVideo("video/part1/Start", null, function(videoObj){
         //     if (cc.isValid(videoObj)) {}
         //     console.log("视频播放完成！！！！！！！");

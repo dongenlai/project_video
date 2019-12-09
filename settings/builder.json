@@ -29,7 +29,7 @@
     "portrait": false,
     "upsideDown": true
   },
-  "packageName": "com.cuckoo.videogame",
+  "packageName": "com.cuckoo.game",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait",

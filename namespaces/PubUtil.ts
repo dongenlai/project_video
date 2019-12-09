@@ -60,7 +60,7 @@ namespace cuckoo {
             try {
                 return JSON.parse(strData);
             } catch (e) {
-                console.error(cc.js.formatStr("exception name=%s, msg=%s class=%s line=%d", e.name, e.message, e.fileName, e.lineNumber));
+                console.error(cc.js.formatStr("PubUtil-> exception name=%s, msg=%s class=%s line=%d", e.name, e.message, e.fileName, e.lineNumber));
                 return {};
             }
         },
@@ -78,7 +78,9 @@ namespace cuckoo {
         },
 
         getLocalDataJson:function(key:any):any{
-            const data = cc.sys.localStorage.getItem(cuckoo.GAME.cfg.localStorageVersion + key);
+            const Key = cuckoo.GAME.cfg.localStorageVersion + key;
+            console.log("get local json key: " + Key)
+            const data = cc.sys.localStorage.getItem(Key);
             if (!data)
                 return {};
 
@@ -89,5 +91,17 @@ namespace cuckoo {
             }
             return json;
         },
+
+        removeItemInLocalDataJson:function(key:string)  {
+            if (key){
+                const Key = cuckoo.GAME.cfg.localStorageVersion + key
+                console.log("delete local json key: " + Key)
+                cc.sys.localStorage.removeItem(Key);
+            }
+        },
+
+        clearLocalDataJson:function():void {
+            cc.sys.localStorage.clear();
+        }
     }
 }

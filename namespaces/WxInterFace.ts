@@ -84,23 +84,23 @@ namespace cuckoo {
         },
 
         //下订单 
-        doOrder:function():void{
+        doOrder:function(resCode:string):void{
+            const resInfo = cuckoo.Base64.decode(resCode);
+            const resCodeStr = JSON.stringify(resInfo);
+
             if (cc.sys.os == cc.sys.OS_ANDROID) {
-                // jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "doOrder", "(IILjava/lang/String;Ljava/lang/String;)V",
-                //     jsondata["orderId"], jsondata["channelId"], jsondata["payInfo"], jsondata["thirdOrderId"]);
+                jsb.reflection.callStaticMethod(this._className, "doOrder", "(Ljava/lang/String;)V", resCode);
             } else if (cc.sys.os == cc.sys.OS_IOS) {
-                const payInfo = {
-                    appid:"wxadf0ba8a4e984ce8",
-                    noncestr:"87ff30748e52fd4941b3739f53f00c7a",
-                    package:"Sign=WXPay",
-                    partnerid:1900006771,
-                    prepayid:"wx24220244985843f7d06b1fbb1961990632",
-                    sign:"243A1394B579F473F506BB0F243BE511",
-                    timestamp:1574604165,
-                }
-                var s = JSON.stringify(payInfo)
-                jsb.reflection.callStaticMethod("wxInterface", "doOrder:withInfo:", s, "orderId");
+                jsb.reflection.callStaticMethod("wxInterface", "doOrder:withInfo:", resCode, "orderId");
             }
+        },
+
+        payResNotify:function (code) {
+            console.log("微信支付通知");
+        },
+
+        payRes:function (reCode:number) {
+            console.log("分享支付回调:" + reCode)
         },
 
         //开始分享 

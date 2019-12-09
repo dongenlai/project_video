@@ -50,7 +50,6 @@ export default class HotUpdate extends cc.EventTarget {
       this.stroagePath = storagePath
       this.manifestUrl = manifestUrl
       this.am = new jsb.AssetsManager(this.manifestUrl, storagePath, this._versionCompareHandle);
-  
       this.am.setVerifyCallback(this._verifyCallback)
       if (cc.sys.os == cc.sys.OS_ANDROID) {
         this.am.setMaxConcurrentTask(3);
@@ -113,14 +112,14 @@ export default class HotUpdate extends cc.EventTarget {
       switch (code) {
         case jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST:  //0
           break
-        case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST: //1
+        case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST:  //1
           msg = event.getMessage()
           break
-        case jsb.EventAssetsManager.ERROR_PARSE_MANIFEST:  //2
+        case jsb.EventAssetsManager.ERROR_PARSE_MANIFEST:     //2
           break
-        case jsb.EventAssetsManager.ALREADY_UP_TO_DATE: //4
+        case jsb.EventAssetsManager.ALREADY_UP_TO_DATE:       //4
           break
-        case jsb.EventAssetsManager.NEW_VERSION_FOUND:  //3
+        case jsb.EventAssetsManager.NEW_VERSION_FOUND:        //3
           totalBytes = event.getTotalBytes()
           break
         default:

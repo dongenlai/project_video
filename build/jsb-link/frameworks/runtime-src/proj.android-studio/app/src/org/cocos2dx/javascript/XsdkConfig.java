@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 public class XsdkConfig {
 	private final static String TAG = "cocos2d-x";
 	private final static String CONFIG_FILE = "xsdk_init.json";
+
 	
 	/* **
 	 * 声网视频、高德地图、腾讯bugly、网易7鱼反馈、热云统计

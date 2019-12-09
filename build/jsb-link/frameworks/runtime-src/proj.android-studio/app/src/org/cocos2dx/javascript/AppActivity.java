@@ -34,9 +34,8 @@ import android.content.res.Configuration;
 import android.util.Log;
 
 import com.shared.sdk.PermissionManager;
-import java.util.List;
-import pub.devrel.easypermissions.EasyPermissions;
 import com.shared.sdk.NativeInterface;
+import android.graphics.PixelFormat;
 
 public class AppActivity extends Cocos2dxActivity {
     public static AppActivity app;
@@ -54,6 +53,7 @@ public class AppActivity extends Cocos2dxActivity {
             // Don't need to finish it again since it's finished in super.onCreate .
             return;
         }
+
         // DO OTHER INITIALIZATION BELOW
         SDKWrapper.getInstance().init(this);
         XsdkNative.initXsdkNative(this);
@@ -63,8 +63,13 @@ public class AppActivity extends Cocos2dxActivity {
     public Cocos2dxGLSurfaceView onCreateView() {
         Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);
         // TestCpp should create stencil buffer
-        glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
+
+        //设置像素格式满足视频层在UI层下方
+//        glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
         SDKWrapper.getInstance().setGLSurfaceView(glSurfaceView, this);
+
+        glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
+        glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
         return glSurfaceView;
     }

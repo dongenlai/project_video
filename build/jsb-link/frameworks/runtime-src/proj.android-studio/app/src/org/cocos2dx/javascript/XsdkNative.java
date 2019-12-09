@@ -6,6 +6,7 @@ import android.view.View;
 import com.shared.sdk.WXInterface;
 import com.shared.sdk.PermissionManager;
 import com.shared.sdk.NativeInterface;
+import com.shared.sdk.AlipayInterface;
 
 import org.cocos2dx.javascript.atom.AppList;
 import org.cocos2dx.javascript.atom.PhoneNumber;
@@ -19,7 +20,8 @@ public class XsdkNative {
 		PhoneNumber.initPhoneNumber(mActivity);
 		WXInterface.init(activity);
 		NativeInterface.init(activity);
-//		PermissionManager.init(activity);
+		PermissionManager.init(activity);
+		AlipayInterface.init(activity);
 
 		AppList.initAppList(mActivity);
 		hideNavigationBar();

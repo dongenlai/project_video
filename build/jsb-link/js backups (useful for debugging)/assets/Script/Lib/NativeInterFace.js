@@ -48,10 +48,9 @@ console.log("设置屏幕亮度:" + c);
 cc.sys.os == cc.sys.OS_ANDROID ? jsb.reflection.callStaticMethod(this._className_ANDROID, "setWindowBrightness", "(Ljava/lang/String;)V", c) : cc.sys.os == cc.sys.OS_IOS && jsb.reflection.callStaticMethod(this._className_IOS, "setWindownBrightness:", c);
 },
 getPackageName: function() {
-return "";
-},
-getVersionName: function() {
-return "";
+var c = "";
+cc.sys.os == cc.sys.OS_ANDROID ? c = jsb.reflection.callStaticMethod(this._className_ANDROID, "getPackageName", "()Ljava/lang/String;") : cc.sys.os == cc.sys.OS_IOS && (c = jsb.reflection.callStaticMethod("NativeInterFace", "getPackageName"));
+return c;
 },
 getVersionCode: function() {
 var c = "0.0";

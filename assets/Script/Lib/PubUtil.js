@@ -58,7 +58,7 @@ var cuckoo;
                 return JSON.parse(strData);
             }
             catch (e) {
-                console.error(cc.js.formatStr("exception name=%s, msg=%s class=%s line=%d", e.name, e.message, e.fileName, e.lineNumber));
+                console.error(cc.js.formatStr("PubUtil-> exception name=%s, msg=%s class=%s line=%d", e.name, e.message, e.fileName, e.lineNumber));
                 return {};
             }
         },
@@ -73,7 +73,9 @@ var cuckoo;
             cc.sys.localStorage.setItem(json["version"] + key, this.obj2String(json));
         },
         getLocalDataJson: function (key) {
-            var data = cc.sys.localStorage.getItem(cuckoo.GAME.cfg.localStorageVersion + key);
+            var Key = cuckoo.GAME.cfg.localStorageVersion + key;
+            console.log("get local json key: " + Key);
+            var data = cc.sys.localStorage.getItem(Key);
             if (!data)
                 return {};
             var json = this.string2Obj(data);
@@ -82,6 +84,16 @@ var cuckoo;
                 return {};
             }
             return json;
+        },
+        removeItemInLocalDataJson: function (key) {
+            if (key) {
+                var Key = cuckoo.GAME.cfg.localStorageVersion + key;
+                console.log("delete local json key: " + Key);
+                cc.sys.localStorage.removeItem(Key);
+            }
+        },
+        clearLocalDataJson: function () {
+            cc.sys.localStorage.clear();
         }
     };
 })(cuckoo || (cuckoo = {}));

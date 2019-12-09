@@ -1,87 +1,104 @@
 var cuckoo;
 
-(function(t) {
-var e = function() {
-return function(t, e, o, n) {
+(function(e) {
+var t = function() {
+return function(e, t, o, s) {
 this.postEventName = "";
-this.postEventName = t;
-this.errorCode = e;
+this.postEventName = e;
+this.errorCode = t;
 this.errorMsg = o;
-this.retStr = n;
+this.retStr = s;
 };
 }(), o = function() {
 function o() {}
-o.httpGet = function(t, e) {
-var o = new XMLHttpRequest();
-[ "abort", "error", "timeout" ].forEach(function(t) {
-o["on" + t] = function() {
-e(1, t);
+o.downloadPic = function(t, s) {
+if (cc.sys.isNative) if (cc.sys.os != cc.sys.OS_IOS) {
+var n = jsb.fileUtils.getWritablePath() + "headimg/", i = n + e.Base64.encode(t) + ".png";
+if (jsb.fileUtils.isFileExist(i)) s(i); else {
+o.httpGet(t, function(e) {
+if (e) {
+jsb.fileUtils.isDirectoryExist(n) || jsb.fileUtils.createDirectory(n);
+if (jsb.fileUtils.writeDataToFile(new Uint8Array(e), i)) {
+console.log("Remote write file succeed.");
+s(i);
+} else console.log("Remote write file failed!.");
+} else console.log("Remote download file failed.");
+}, !0);
+}
+} else s(t); else s(t);
+};
+o.httpGet = function(e, t, o) {
+var s = new XMLHttpRequest();
+o && (s.responseType = "arraybuffer");
+[ "abort", "error", "timeout" ].forEach(function(e) {
+s["on" + e] = function() {
+o ? t(null) : t(1, e);
 };
 });
-o.onreadystatechange = function() {
-if (4 == o.readyState && o.status >= 200 && o.status <= 207) {
-var t = o.statusText, n = o.responseText;
-e(0, t, n);
+s.onreadystatechange = function() {
+if (4 == s.readyState && s.status >= 200 && s.status <= 207) {
+var e = s.statusText, n = o ? s.response : s.responseText;
+o ? t(n) : t(0, e, n);
 }
 };
-o.timeout = 1e4;
-o.open("GET", t, !0);
-o.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-o.send();
+s.timeout = 1e4;
+s.open("GET", e, !0);
+s.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+s.send();
 };
-o.httpPost = function(t, e, n, s, r) {
-var a = new XMLHttpRequest();
-[ "abort", "error", "timeout" ].forEach(function(t) {
-a["on" + t] = function() {
-console.log("Http::eventname: " + t);
-o.postEvent(r, 1, t, "");
+o.httpPost = function(e, t, s, n, i) {
+var r = new XMLHttpRequest();
+[ "abort", "error", "timeout" ].forEach(function(e) {
+r["on" + e] = function() {
+console.log("Http::eventname: " + e);
+o.postEvent(i, 1, e, "");
 };
 });
-a.onreadystatechange = function() {
-console.log("xhr.readyState: " + a.readyState + " xhr.status: " + a.status);
-if (4 == a.readyState && a.status >= 200 && a.status <= 207) {
-var t = a.statusText, e = a.responseText;
+r.onreadystatechange = function() {
+if (4 == r.readyState && r.status >= 200 && r.status <= 207) {
+var e = r.statusText, t = r.responseText;
 if (cc.sys.isNative) {
-var n = a.getResponseHeader("Set-Cookie");
-if (n) {
-var s = n.indexOf(";");
-n = n.substring(s, 0);
-o.httpCookie = n;
+var s = r.getResponseHeader("Set-Cookie");
+if (s) {
+var n = s.indexOf(";");
+s = s.substring(n, 0);
+o.httpCookie = s;
 }
 } else o.httpCookie = document.cookie;
-o.postEvent(r, 0, t, e);
-} else 4 == a.readyState && 0 == a.status && o.postEvent(r, 1, "onError", "");
+o.postEvent(i, 0, e, t);
+} else 4 == r.readyState && 0 == r.status && o.postEvent(i, 1, "onError", "");
 };
-a.timeout = n;
-a.open("POST", t, !0);
-a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-cc.sys.isNative && a.setRequestHeader("Cookie", o.httpCookie);
-for (var i in e) a.setRequestHeader(i, e[i]);
-if (s.constructor === String) a.send(s); else {
+r.timeout = s;
+r.open("POST", e, !0);
+r.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+cc.sys.isNative && r.setRequestHeader("Cookie", o.httpCookie);
+for (var a in t) r.setRequestHeader(a, t[a]);
+if (n.constructor === String) r.send(n); else {
 var c = "";
-for (var i in s) 0 === c.length ? c += cc.js.formatStr("%s=%s", i, encodeURIComponent(s[i])) : c += cc.js.formatStr("&%s=%s", i, encodeURIComponent(s[i]));
-console.log("发送数据包" + c + "\n 当前url: " + t);
-console.log("请求头信息" + JSON.stringify(e));
-a.send(c);
+for (var a in n) 0 === c.length ? c += cc.js.formatStr("%s=%s", a, encodeURIComponent(n[a])) : c += cc.js.formatStr("&%s=%s", a, encodeURIComponent(n[a]));
+console.log("发送数据包： " + c);
+console.log("url: " + e);
+console.log("请求头信息： " + JSON.stringify(t));
+r.send(c);
 }
 };
-o.httpPostHs = function(e, n, s) {
-var r = {
-appKey: "wechatDefaultLoginConf",
-Authorization: "Bearer " + t.curUser.token
+o.httpPostHs = function(t, s, n) {
+var i = {
+appKey: e.GAME.appKey,
+Authorization: "Bearer " + e.curUser.token
 };
-o.httpPost(t.GAME.urlHs + e, r, 1e4, n, s);
+o.httpPost(e.GAME.urlHs + t, i, 1e4, s, n);
 };
-o.postEvent = function(t, o, n, s) {
-var r = t.postEventNode, a = t.postEventName;
-if (r && cc.isValid(r)) {
-var i = new cc.Event.EventCustom(a, !0), c = new e(a, o, n, s);
-i.setUserData(c);
-r.dispatchEvent(i);
+o.postEvent = function(e, o, s, n) {
+var i = e.postEventNode, r = e.postEventName;
+if (i && cc.isValid(i)) {
+var a = new cc.Event.EventCustom(r, !0), c = new t(r, o, s, n);
+a.setUserData(c);
+i.dispatchEvent(a);
 } else console.log("http event node is valid");
 };
 o.httpCookie = "";
 return o;
 }();
-t.Net = o;
+e.Net = o;
 })(cuckoo || (cuckoo = {}));

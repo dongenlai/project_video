@@ -30,6 +30,9 @@ export default class BaseNode extends cc.Component {
 
         const moveBy = cc.moveBy(time, cc.p(0, 120));
         const finish = cc.callFunc(function(){
+            if(callBack && typeof callBack === "function"){
+                callBack()
+            }
             toast.destroy();
             this.curRunToast = null;
         }, this);
@@ -57,7 +60,6 @@ export default class BaseNode extends cc.Component {
     }
 
     protected removeEventListenerWithTarget():void{
-
         console.log("removeEventListenerWithTarget(params): " + JSON.stringify(this.events));
     }
    

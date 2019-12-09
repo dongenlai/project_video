@@ -119,6 +119,12 @@ return null !== t && t.apply(this, arguments) || this;
 e.prototype.onLoad = function() {
 var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
 this.node.scale = Math.max(cc.view.getCanvasSize().width / e, cc.view.getCanvasSize().height / o);
+console.log(cc.view.getCanvasSize().width + " ===1b " + cc.view.getCanvasSize().height);
+console.log(cc.view.getVisibleSize().width + " ====2b:  " + cc.view.getVisibleSize().height);
+console.log(cc.view.getFrameSize().width + "===3B:  " + cc.view.getFrameSize().height);
+console.log(cc.view.getDevicePixelRatio());
+console.log("srcScaleForShowAll:" + t);
+console.log("realWidth: " + e);
 };
 return e = i([ s ], e);
 }(cc.Component));
@@ -176,6 +182,7 @@ n.parent = this.node;
 var i = cc.find("text", n);
 i && (i.getComponent(cc.Label).string = t || "");
 var r = cc.moveBy(e, cc.p(0, 120)), s = cc.callFunc(function() {
+o && "function" == typeof o && o();
 n.destroy();
 this.curRunToast = null;
 }, this);
@@ -238,31 +245,24 @@ var r = cc._decorator, s = r.ccclass, c = r.property, a = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
-e.pressedScale = 1;
-e.transDuration = 0;
-e.initScale = 0;
-e.button = null;
-e.scaleDownAction = null;
-e.scaleUpAction = null;
+e.pressedScale = .95;
+e.transDuration = .1;
 return e;
 }
 e.prototype.onLoad = function() {
-var t = this, e = cc.find("Menu/AudioMng") || cc.find("Game/AudioMng");
-e && (e = e.getComponent("AudioMng"));
-t.initScale = this.node.scale;
-t.button = t.getComponent(cc.Button);
-t.scaleDownAction = cc.scaleTo(t.transDuration, t.pressedScale);
-t.scaleUpAction = cc.scaleTo(t.transDuration, t.initScale);
-function o(e) {
+var t = cc.find("Menu/AudioMng") || cc.find("Game/AudioMng");
+t && (t = t.getComponent("AudioMng"));
+var e = this.node.scale, o = cc.scaleTo(this.transDuration, this.pressedScale), n = cc.scaleTo(this.transDuration, e);
+function i(t) {
 this.stopAllActions();
-this.runAction(t.scaleUpAction);
+this.runAction(n);
 }
-this.node.on("touchstart", function(e) {
+this.node.on("touchstart", function(t) {
 this.stopAllActions();
-this.runAction(t.scaleDownAction);
+this.runAction(o);
 }, this.node);
-this.node.on("touchend", o, this.node);
-this.node.on("touchcancel", o, this.node);
+this.node.on("touchend", i, this.node);
+this.node.on("touchcancel", i, this.node);
 };
 i([ c ], e.prototype, "pressedScale", void 0);
 i([ c ], e.prototype, "transDuration", void 0);
@@ -306,6 +306,12 @@ return null !== t && t.apply(this, arguments) || this;
 }
 e.prototype.onLoad = function() {
 var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
+console.log(cc.view.getCanvasSize().width + " ===1b " + cc.view.getCanvasSize().height);
+console.log(cc.view.getVisibleSize().width + " ====2b:  " + cc.view.getVisibleSize().height);
+console.log(cc.view.getFrameSize().width + "===3B:  " + cc.view.getFrameSize().height);
+console.log(cc.view.getDevicePixelRatio());
+console.log("srcScaleForShowAll:" + t);
+console.log("realWidth: " + e);
 this.node.width = this.node.width * (cc.view.getCanvasSize().width / e);
 this.node.height = this.node.height * (cc.view.getCanvasSize().height / o);
 };
@@ -378,11 +384,60 @@ this.showToast("章节功能敬请期待！", 5);
 e.prototype.onLockedChapter = function() {
 this.showToast("解锁章节章节功能敬请期待！", 5);
 };
+e.prototype.onAction = function() {
+cuckoo.Net.httpPostHs("/preOrder/v1", {
+goodsId: 1,
+channel: 2
+}, {
+postEventName: "doOrderPre",
+postEventNode: this.node
+});
+};
 e.prototype.onRecord = function() {
 this.recordLayer.active = !0;
 };
 e.prototype.start = function() {
+t.prototype.start.call(this, [ "doOrderPre", "doOrder_Wx", "doOrder_AliPay" ], this.onHttpEvent);
 this.init();
+};
+e.prototype.onHttpEvent = function(t) {
+var e = t.postEventName, o = t.errorCode, n = cuckoo.PubUtil.string2Obj(t.retStr);
+if (0 == o) if (n.code && 1e4 != n.code) this.showToast(n.message, 5); else switch (e) {
+case "doOrderPre":
+this.doOrderPre_Success(n);
+break;
+
+case "doOrder_Wx":
+this.doOrder_Wx_Success(n);
+break;
+
+case "doOrder_AliPay":
+this.doOrder_AliPay_Success(n);
+break;
+
+default:
+console.log("event is not exit");
+} else this.showToast("http数据接口访问出错,eventName为(" + e + ")", 5);
+};
+e.prototype.doOrderPre_Success = function(t) {
+console.log("预下单成功" + JSON.stringify(t));
+var e = t.result, o = {
+orderId: e.orderId,
+channel: e.channel,
+token: cuckoo.curUser.token
+};
+cuckoo.Net.httpPostHs("/pay/v1", o, {
+postEventName: "doOrder_AliPay",
+postEventNode: this.node
+});
+};
+e.prototype.doOrder_Wx_Success = function(t) {
+console.log("微信预下单成功" + JSON.stringify(t));
+};
+e.prototype.doOrder_AliPay_Success = function(t) {
+console.log("支付宝预下单成功" + JSON.stringify(t));
+var e = t.result || "";
+cuckoo.WxInterFace.doOrder(e);
 };
 e.prototype.onUserInput = function() {
 this.settingLayer.active = !0;
@@ -507,6 +562,9 @@ e.prototype.onLoad = function() {
 this._onAlredyUpToDate();
 cc.loader.loadRes("icon", cc.SpriteFrame);
 cc.loader.loadRes("icon", cc.SpriteFrame);
+cuckoo.Net.downloadPic("http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erD6MOUwRKV9NyBAqnoFDTnltzAe2zWOkKxyDOFibVBb1ZV5CaATJwYAuNqZ5sXMBC4c8iacaHDf8RA/132", function(t) {
+console.log("===--=--=-=1=path" + t);
+});
 };
 e.prototype.onDestroy = function() {
 if (cc.sys.isNative && this.hotUpdate) {
@@ -596,35 +654,35 @@ postEventNode: this.node
 });
 };
 e.prototype.onHttpEvent = function(t) {
-var e = t.postEventName;
-if (0 == t.errorCode) {
-var o = cuckoo.PubUtil.string2Obj(t.retStr);
-switch (e) {
+var e = t.postEventName, o = t.errorCode, n = t.errorMsg || "";
+if (0 == o) {
+var i = cuckoo.PubUtil.string2Obj(t.retStr);
+if (40001 != i.code) if (41006 != i.code) if (i.code && 1e4 != i.code) this.showToast(i.message + "(" + i.code + ")", 5); else switch (e) {
 case "wxLogin":
 case "autoLogin":
 case "guestLogin":
-this.onLoginSuccess(o);
+this.onLoginSuccess(i);
 break;
 
 case "notice":
-this.onNoticeSuccess(o);
+this.onNoticeSuccess(i);
 
 default:
 console.log("event is not exit");
-}
-} else this.showToast("http数据接口访问出错,eventName为(" + e + ")", 5);
+} else cuckoo.PubUtil.removeItemInLocalDataJson("localUser"); else this.onAutoLogin();
+} else this.showToast("http数据接口访问出错,eventName:" + e + " errmsg:" + n, 5);
 };
 e.prototype.onNoticeSuccess = function(t) {
-console.log("----1111----" + JSON.stringify(t));
+console.log("公告内容获取成功" + JSON.stringify(t));
 };
 e.prototype.onLoginSuccess = function(t) {
+console.log("登陆返回数据" + JSON.stringify(t));
 cuckoo.curUser.baseInfo.readFromJson(t);
 var e = cuckoo.curUser.baseInfo.token;
 e && (cuckoo.curUser.token = e);
 cuckoo.PubUtil.setLocalDataJson("localUser", {
 token: e
 });
-console.log("登陆返回数据" + JSON.stringify(t));
 this.onGoGame();
 };
 e.prototype.onLoad = function() {
@@ -642,14 +700,44 @@ e.prototype.onTouch = function() {
 console.log("touch-touch");
 };
 e.prototype.onWxClick = function() {
-console.log("-------==" + cuckoo.NativeInterFace.openWebURL("http://www.baidu.com"));
+var t = this;
+this.checkIsAutoLogin() ? this.onAutoLogin() : cuckoo.WxInterFace.wXLogin(function(e, o) {
+console.log("微信登陆成功:" + e + " code: ");
+if (0 == parseInt(e)) {
+var n = {
+code: o
+};
+cuckoo.Net.httpPostHs("/weChatLogin/v1", n, {
+postEventName: "wxLogin",
+postEventNode: t.node
+});
+}
+});
+};
+e.prototype.checkIsAutoLogin = function() {
+var t = cuckoo.PubUtil.getLocalDataJson("localUser");
+if (t.token) {
+cuckoo.curUser.token = t.token;
+return !0;
+}
+return !1;
 };
 e.prototype.onYkClick = function() {
-console.log("-------==" + cuckoo.NativeInterFace.getVersionCode());
+var t = this.checkIsAutoLogin();
+console.log("isAutoLogin: " + t);
+if (t) this.onAutoLogin(); else {
+console.log("游客登陆！！");
+cuckoo.Net.httpPostHs("/guestGenerateAndLogin/v1", {}, {
+postEventName: "guestLogin",
+postEventNode: this.node
+});
+}
 };
 e.prototype.onAutoLogin = function() {
 console.log("自动登陆！！");
-cuckoo.Net.httpPostHs("/guestGenerateAndLogin/v1", {}, {
+cuckoo.Net.httpPostHs("/autoLogin/v1", {
+token: cuckoo.curUser.token
+}, {
 postEventName: "autoLogin",
 postEventNode: this.node
 });
@@ -658,7 +746,6 @@ e.prototype.showPreLoadPanel = function(t) {
 this.bg.opacity = t ? 255 : 0;
 };
 e.prototype.onGoGame = function() {
-this.showPreLoadPanel(!1);
 cc.director.loadScene("Game");
 };
 i([ u(cc.Prefab) ], e.prototype, "videoPrefab", void 0);
@@ -776,7 +863,7 @@ t[t["吐槽日榜"] = 0] = "吐槽日榜";
 t[t["吐槽周榜"] = 1] = "吐槽周榜";
 t[t["吐槽总榜"] = 2] = "吐槽总榜";
 })(p || (p = {}));
-var f = function(t) {
+var d = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -804,7 +891,7 @@ var t = cc.find("content", this.node), e = cc.find("leftNode", t);
 this.lastTouchLeftBtn = cc.find("rescueBtn", e);
 var o = cc.find("rescuePanel", t);
 this.lastPanel = o;
-this.rescuePanel_Item = cc.find("rescuePanel_Item", o);
+this.rescuePanel_Item = cc.find("rescuePanel_Item", this.node);
 var n = cc.find("rescueList", o);
 this.rescueListContent = cc.find("view/content", n);
 var i = cc.find("thumbsPanel", t);
@@ -815,15 +902,15 @@ this.lastPraiseTopBtn = r.getChildByName("praiseDayBtn");
 this.panelList.push(o, i, i);
 var s = cc.find("PraiseText", r).getComponent(cc.Label), c = cc.find("PraiseWeekText", r).getComponent(cc.Label), a = cc.find("PraiseTotalText", r).getComponent(cc.Label);
 this.pointPraiseAndTucaoTexts.push(s, c, a);
-var p = cc.find("praiseDayBtn", r), u = cc.find("praiseWeekBtn", r), l = cc.find("praiseTotalBtn", r), h = cc.find("Background/Label", p).getComponent(cc.Label), f = cc.find("Background/Label", u).getComponent(cc.Label), d = cc.find("Background/Label", l).getComponent(cc.Label);
-this.pointPraiseAndTucaoBtn_Texts.push(h, f, d);
+var p = cc.find("praiseDayBtn", r), u = cc.find("praiseWeekBtn", r), l = cc.find("praiseTotalBtn", r), h = cc.find("Background/Label", p).getComponent(cc.Label), d = cc.find("Background/Label", u).getComponent(cc.Label), f = cc.find("Background/Label", l).getComponent(cc.Label);
+this.pointPraiseAndTucaoBtn_Texts.push(h, d, f);
 var _ = cc.find("thumb_r_top", i), y = cc.find("rankList", _);
 this.thumbAndTucaoContent = cc.find("view/content", y);
 this.thumbAndTucaoContentItem = cc.find("rankListItem", _);
 this.thumbNum = cc.find("thumbNum", _).getComponent(cc.Label);
 var g = cc.find("thumbsList", i);
 this.thumbsListContent = cc.find("view/content", g);
-this.thumbsListContentItem = cc.find("thumbList_Item", i);
+this.thumbsListContentItem = cc.find("thumbList_Item", this.node);
 };
 e.prototype.start = function() {
 this.refreshRescueList();
@@ -854,12 +941,13 @@ e.prototype.getRecordType = function() {
 return this.curLeftPressType;
 };
 e.prototype.refreshRescueList = function() {
+this.rescueListContent.removeAllChildren();
 this.rescueListContent.height = 10 * (this.rescuePanel_Item.height + this.spacing) + this.spacing;
 for (var t = 0; t < 10; t++) {
 var e = cc.instantiate(this.rescuePanel_Item);
 e.active = !0;
 this.rescueListContent.addChild(e);
-e.setPosition(-this.rescueListContent.width / 2, 0 - e.height * t - this.spacing * (t + 1));
+e.setPosition(0, 0 - e.height * t - this.spacing * (t + 1));
 }
 };
 e.prototype.refreshPointPraiseList = function() {
@@ -909,6 +997,7 @@ this.thumbAndTucaoContent.height = 10 * (this.thumbAndTucaoContentItem.height + 
 for (var o = 0; o < 10; o++) {
 var n = cc.instantiate(this.thumbAndTucaoContentItem);
 n.active = !0;
+n.opacity = 255;
 this.thumbAndTucaoContent.addChild(n);
 n.setPosition(-this.thumbAndTucaoContent.width / 2, 0 - n.height * o - this.spacing * (o + 1));
 }
@@ -920,7 +1009,7 @@ for (var e = 0; e < 10; e++) {
 var o = cc.instantiate(this.thumbsListContentItem);
 o.active = !0;
 this.thumbsListContent.addChild(o);
-o.setPosition(-this.thumbsListContent.width / 2, 0 - o.height * e - this.spacing * (e + 1));
+o.setPosition(0, 0 - o.height * e - this.spacing * (e + 1));
 }
 };
 e.prototype.onBack = function() {
@@ -928,7 +1017,7 @@ this.node.active = !1;
 };
 return e = i([ h ], e);
 }(u.default);
-o.default = f;
+o.default = d;
 cc._RF.pop();
 }, {
 "./BaseNode": "BaseNode"
@@ -1350,6 +1439,11 @@ this.video_object = this.node.getComponent(cc.VideoPlayer);
 this.callback = null;
 this.playState = !1;
 console.log("VideoPrefab init");
+};
+e.prototype.uiAdaptation = function() {
+var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
+console.log("realWidth: " + e + " realHeight: " + o);
+this.node.scale = Math.max(cc.view.getCanvasSize().width / e, cc.view.getCanvasSize().height / o);
 };
 e.prototype.start = function() {};
 e.prototype.play = function() {

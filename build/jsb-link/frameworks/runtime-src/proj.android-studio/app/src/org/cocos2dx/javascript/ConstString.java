@@ -1,6 +1,8 @@
 package org.cocos2dx.javascript;
  
 public class ConstString {
+    public static  String wxAppID = "";
+
     //    yaya Voice ID
     public static final String yayaVoiceId = "1000983";
 
@@ -14,7 +16,6 @@ public class ConstString {
     public static final String xiaomiAppKey = "5621764683090";
 
     // 7鱼反馈
-
     public static final String adAppId = "9";
     public static final String adAppKey = "6c6657617360bac7";
     public static final String adSplashMid = "10";

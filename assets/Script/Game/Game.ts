@@ -55,7 +55,15 @@ export default class Game extends BaseNode {
 
     //立即行动
     public onAction():void{
-        this.showToast("立即行动功能敬请期待！", 5);
+
+        // this.showToast("立即行动功能敬请期待！", 5);
+        // var video = cc.find("test_video", this.node).getComponent(cc.VideoPlayer);
+        // cc.find("bg", this.node).active = false
+        // var test_video = cc.find("test_video", this.node);
+        // test_video.getComponent(VideoUtil).playVideo(video.clip);
+
+
+        cuckoo.Net.httpPostHs("/preOrder/v1", {"goodsId":1, "channel":2 }, {postEventName:"doOrderPre", postEventNode:this.node});
     }
 
     //战绩入口
@@ -64,7 +72,58 @@ export default class Game extends BaseNode {
     }
 
     start () {
+       super.start(["doOrderPre", "doOrder_Wx", "doOrder_AliPay"], this.onHttpEvent);
        this.init();
+    }
+
+    //HttpEvent
+    onHttpEvent(data:any){
+        const eventName = data.postEventName;
+        const errorCode = data.errorCode;
+
+        const retStr = cuckoo.PubUtil.string2Obj(data.retStr);
+        if (errorCode != 0) {
+            this.showToast("http数据接口访问出错,eventName为" + "(" + eventName + ")", 5);
+            return;
+        }
+
+        if (retStr.code && retStr.code != 10000){
+            this.showToast(retStr.message, 5);
+            return;
+        }
+
+        switch(eventName){
+            case "doOrderPre":
+                this.doOrderPre_Success(retStr);
+                break;
+            case "doOrder_Wx":
+                this.doOrder_Wx_Success(retStr);
+                break;
+            case "doOrder_AliPay":
+                this.doOrder_AliPay_Success(retStr);
+                break;
+            default:
+                console.log("event is not exit");
+                break    
+        }
+    }
+
+    private doOrderPre_Success(msgTbl):void{
+        console.log("预下单成功" + JSON.stringify(msgTbl));
+
+        var result = msgTbl.result
+        var data = {"orderId":result.orderId, "channel":result.channel, "token":cuckoo.curUser.token}
+        cuckoo.Net.httpPostHs("/pay/v1",data , {postEventName:"doOrder_AliPay", postEventNode:this.node});
+    }
+
+    private doOrder_Wx_Success(msgTbl):void{
+        console.log("微信预下单成功" + JSON.stringify(msgTbl));
+    }
+
+    private doOrder_AliPay_Success(msgTbl):void{
+        console.log("支付宝预下单成功" + JSON.stringify(msgTbl));
+        const resCode = msgTbl.result || ""
+        cuckoo.WxInterFace.doOrder(resCode);
     }
 
     //用户信息入口 

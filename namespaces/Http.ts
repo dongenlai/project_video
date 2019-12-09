@@ -106,9 +106,8 @@ namespace cuckoo {
                     Net.postEvent(eventInfo, 1, eventname, "");
                 }
             });
-
             xhr.onreadystatechange = function () {
-                console.log("xhr.readyState: " + xhr.readyState + " xhr.status: " + xhr.status);
+                // console.log("xhr.readyState: " + xhr.readyState + " xhr.status: " + xhr.status);
                 if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
                     var httpStatus = xhr.statusText;
                     var response = xhr.responseText;
@@ -128,7 +127,6 @@ namespace cuckoo {
                     Net.postEvent(eventInfo, 1, "onError", "");
                 }
             };
-
             // 10 seconds for timeout
             xhr.timeout = timeOut;
             xhr.open("POST",url, true);
@@ -150,8 +148,9 @@ namespace cuckoo {
                     else
                      sendData += cc.js.formatStr("&%s=%s", name, encodeURIComponent(postData[name]));
                 }
-                console.log("发送数据包" + sendData + "\n" + " 当前url: " + url);
-                console.log("请求头信息" + JSON.stringify(header));
+                console.log("发送数据包： " + sendData);
+                console.log("url: " + url)
+                console.log("请求头信息： " + JSON.stringify(header));
                 xhr.send(sendData);
             }
         }

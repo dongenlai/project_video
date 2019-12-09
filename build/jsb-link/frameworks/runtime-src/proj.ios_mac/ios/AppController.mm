@@ -64,18 +64,33 @@ Application* app = nullptr;
 #else
     _viewController.wantsFullScreenLayout = YES;
 #endif
+    //视频层级放到cocos层级之下
+    //先添加videoView再添加cocosView
+    UIViewController* rvC = [[UIViewController alloc]init];
+    // 视频view
+    UIView *videoView = [[UIView alloc] initWithFrame:bounds];
+    videoView.tag = 10; // 通过tag找到view
+    [rvC.view addSubview:videoView];
+    
+    // 引擎view
+    UIView *cocosView = _viewController.view;
+    cocosView.frame = bounds;//
+    cocosView.backgroundColor = [UIColor clearColor];
+    [rvC.view addSubview:cocosView];
+    
     // Set RootViewController to window
     if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0)
     {
         // warning: addSubView doesn't work on iOS6
-        [window addSubview: _viewController.view];
+        //[window addSubview: _viewController.view];
+        [window addSubview: rvC.view]; //新的rootView
     }
     else
     {
-        // use this method on ios6
-        [window setRootViewController:_viewController];
+         // use this method on ios6
+         //[window setRootViewController:_viewController];
+         [window setRootViewController:rvC]; //新的rootView
     }
-    
     
     [window makeKeyAndVisible];
     
@@ -83,7 +98,6 @@ Application* app = nullptr;
     [[wxInterface shareInstance] initWeiXinSDK:_viewController];
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
     //run the cocos2d-x game scene
     app->start();
     
