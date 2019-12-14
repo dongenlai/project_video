@@ -51,19 +51,17 @@ export default class Game extends BaseNode {
     //解锁章节
     public onLockedChapter():void{
         this.showToast("解锁章节章节功能敬请期待！", 5);
+        
+        cc.find("bg", this.node).active = false
+        var test_video = cc.find("test_video", this.node);
+        var video = test_video.getComponent(cc.VideoPlayer);
+        test_video.getComponent(VideoUtil).playVideo(video.clip);
     }
 
     //立即行动
     public onAction():void{
-
         // this.showToast("立即行动功能敬请期待！", 5);
-        // var video = cc.find("test_video", this.node).getComponent(cc.VideoPlayer);
-        // cc.find("bg", this.node).active = false
-        // var test_video = cc.find("test_video", this.node);
-        // test_video.getComponent(VideoUtil).playVideo(video.clip);
-
-
-        cuckoo.Net.httpPostHs("/preOrder/v1", {"goodsId":1, "channel":2 }, {postEventName:"doOrderPre", postEventNode:this.node});
+        cuckoo.Net.httpPostHs("/preOrder/v1", {"goodsId":1, "channel":1 }, {postEventName:"doOrderPre", postEventNode:this.node});
     }
 
     //战绩入口
@@ -123,7 +121,8 @@ export default class Game extends BaseNode {
     private doOrder_AliPay_Success(msgTbl):void{
         console.log("支付宝预下单成功" + JSON.stringify(msgTbl));
         const resCode = msgTbl.result || ""
-        cuckoo.WxInterFace.doOrder(resCode);
+        // cuckoo.WxInterFace.doOrder(resCode);
+        cuckoo.AlipayInterface.doOrder(resCode);
     }
 
     //用户信息入口 

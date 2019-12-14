@@ -119,12 +119,6 @@ return null !== t && t.apply(this, arguments) || this;
 e.prototype.onLoad = function() {
 var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
 this.node.scale = Math.max(cc.view.getCanvasSize().width / e, cc.view.getCanvasSize().height / o);
-console.log(cc.view.getCanvasSize().width + " ===1b " + cc.view.getCanvasSize().height);
-console.log(cc.view.getVisibleSize().width + " ====2b:  " + cc.view.getVisibleSize().height);
-console.log(cc.view.getFrameSize().width + "===3B:  " + cc.view.getFrameSize().height);
-console.log(cc.view.getDevicePixelRatio());
-console.log("srcScaleForShowAll:" + t);
-console.log("realWidth: " + e);
 };
 return e = i([ s ], e);
 }(cc.Component));
@@ -306,12 +300,6 @@ return null !== t && t.apply(this, arguments) || this;
 }
 e.prototype.onLoad = function() {
 var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
-console.log(cc.view.getCanvasSize().width + " ===1b " + cc.view.getCanvasSize().height);
-console.log(cc.view.getVisibleSize().width + " ====2b:  " + cc.view.getVisibleSize().height);
-console.log(cc.view.getFrameSize().width + "===3B:  " + cc.view.getFrameSize().height);
-console.log(cc.view.getDevicePixelRatio());
-console.log("srcScaleForShowAll:" + t);
-console.log("realWidth: " + e);
 this.node.width = this.node.width * (cc.view.getCanvasSize().width / e);
 this.node.height = this.node.height * (cc.view.getCanvasSize().height / o);
 };
@@ -348,7 +336,7 @@ return r > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var r = t("./BaseNode"), s = cc._decorator, c = s.ccclass, a = s.property, p = function(t) {
+var r = t("./VideoUtil"), s = t("./BaseNode"), c = cc._decorator, a = c.ccclass, p = c.property, u = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -383,11 +371,14 @@ this.showToast("章节功能敬请期待！", 5);
 };
 e.prototype.onLockedChapter = function() {
 this.showToast("解锁章节章节功能敬请期待！", 5);
+cc.find("bg", this.node).active = !1;
+var t = cc.find("test_video", this.node), e = t.getComponent(cc.VideoPlayer);
+t.getComponent(r.default).playVideo(e.clip);
 };
 e.prototype.onAction = function() {
 cuckoo.Net.httpPostHs("/preOrder/v1", {
 goodsId: 1,
-channel: 2
+channel: 1
 }, {
 postEventName: "doOrderPre",
 postEventNode: this.node
@@ -437,7 +428,7 @@ console.log("微信预下单成功" + JSON.stringify(t));
 e.prototype.doOrder_AliPay_Success = function(t) {
 console.log("支付宝预下单成功" + JSON.stringify(t));
 var e = t.result || "";
-cuckoo.WxInterFace.doOrder(e);
+cuckoo.AlipayInterface.doOrder(e);
 };
 e.prototype.onUserInput = function() {
 this.settingLayer.active = !0;
@@ -450,14 +441,15 @@ this.userName.string = cuckoo.curUser.baseInfo.nickName;
 this.rescue_progress.progress = 100;
 this.rescue_label.string = "营救进度:100%";
 };
-i([ a(cc.Prefab) ], e.prototype, "settingPrefab", void 0);
-i([ a(cc.Prefab) ], e.prototype, "recordPrefab", void 0);
-return e = i([ c ], e);
-}(r.default);
-o.default = p;
+i([ p(cc.Prefab) ], e.prototype, "settingPrefab", void 0);
+i([ p(cc.Prefab) ], e.prototype, "recordPrefab", void 0);
+return e = i([ a ], e);
+}(s.default);
+o.default = u;
 cc._RF.pop();
 }, {
-"./BaseNode": "BaseNode"
+"./BaseNode": "BaseNode",
+"./VideoUtil": "VideoUtil"
 } ],
 Load: [ function(t, e, o) {
 "use strict";
@@ -997,7 +989,6 @@ this.thumbAndTucaoContent.height = 10 * (this.thumbAndTucaoContentItem.height + 
 for (var o = 0; o < 10; o++) {
 var n = cc.instantiate(this.thumbAndTucaoContentItem);
 n.active = !0;
-n.opacity = 255;
 this.thumbAndTucaoContent.addChild(n);
 n.setPosition(-this.thumbAndTucaoContent.width / 2, 0 - n.height * o - this.spacing * (o + 1));
 }
@@ -1442,8 +1433,11 @@ console.log("VideoPrefab init");
 };
 e.prototype.uiAdaptation = function() {
 var t = Math.min(cc.view.getCanvasSize().width / this.node.width, cc.view.getCanvasSize().height / this.node.height), e = this.node.width * t, o = this.node.height * t;
+this.node.anchorX = .5;
+this.node.anchorY = .5;
 console.log("realWidth: " + e + " realHeight: " + o);
-this.node.scale = Math.max(cc.view.getCanvasSize().width / e, cc.view.getCanvasSize().height / o);
+this.node.scaleY = Math.max(cc.view.getCanvasSize().width / e, cc.view.getCanvasSize().height / o);
+console.log("this.node.scale===: " + this.node.scale);
 };
 e.prototype.start = function() {};
 e.prototype.play = function() {

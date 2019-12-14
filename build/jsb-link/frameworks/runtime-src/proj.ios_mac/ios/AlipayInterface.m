@@ -15,7 +15,7 @@
 //支付宝支付
 + (BOOL)doOrder: (NSString *) codeInfo;
 {
-    codeInfo = [codeInfo substringFromIndex:11];
+//    codeInfo = [codeInfo substringFromIndex:11];
     NSString *appScheme = @"cuckoo_alipay";
     [[AlipaySDK defaultService] payOrder:codeInfo fromScheme:appScheme callback:^(NSDictionary *resultDic) {
         NSLog(@"reslut 1= %@",resultDic);

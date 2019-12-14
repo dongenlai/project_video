@@ -67,6 +67,9 @@ cc.sys.os == cc.sys.OS_ANDROID ? jsb.reflection.callStaticMethod(this._className
 payResNotify: function(c) {
 console.log("微信支付通知");
 },
+payRes: function(c) {
+console.log("分享支付回调:" + c);
+},
 doShare: function(c, s, t, e, n) {
 console.log("执行分享:type: " + c + " url:" + s + " title:" + t + " description: " + e + " iconpath: " + n);
 n = cc.js.formatStr("%s", n);

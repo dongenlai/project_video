@@ -92,6 +92,9 @@ var cuckoo;
         payResNotify: function (code) {
             console.log("微信支付通知");
         },
+        payRes: function (reCode) {
+            console.log("分享支付回调:" + reCode);
+        },
         //开始分享 
         doShare: function (type, url, title, description, iconpath) {
             console.log("执行分享:" + "type: " + type + " url:" + url + " title:" + title + " description: " + description + " iconpath: " + iconpath);

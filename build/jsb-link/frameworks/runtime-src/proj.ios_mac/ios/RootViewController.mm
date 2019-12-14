@@ -158,23 +158,6 @@ return self;
     [alert release];
 }
 
-+ (BOOL)loadHeadImage:(NSString *)fullpath;
-{
-    //ImageLoader::getInstance()->load([fullpath UTF8String]);
-    return false; //test
-}
-
-+ (BOOL)screenShot:(NSString *)fullpath withInfo:(NSString *)filename;
-{
-    NSString* filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", filename];
-    UIImage *viewImage = [UIImage imageWithContentsOfFile:filePath];
-    if (viewImage != nil) {
-        UIImageWriteToSavedPhotosAlbum(viewImage, nil, nil, nil);
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"保存成功" message:filename delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-        [alertView show];
-    }
-}
-
 //微信登陆认证返回结果
 - (void)managerDidRecvAuthResponse:(SendAuthResp *)response {
     NSString *strCode = [NSString stringWithFormat:@"%@", response.code];
@@ -192,22 +175,31 @@ return self;
 - (void)managerDidRecvPayResultResponse:(PayResp *)response {
     //支付返回结果，实际支付结果需要去微信服务器端查询
     NSString *strMsg,*strTitle = [NSString stringWithFormat:@"支付结果"];
+    int resCode = 3;
     switch (response.errCode) {
         case WXSuccess:
         {
+            resCode = 1;
             strMsg = @"支付结果：成功！";
             NSLog(@"支付成功－PaySuccess，retcode = %d", response.errCode);
-            NSString *aimStr = [NSString stringWithFormat:@"\"%@\" , \"2\" , \"1\" ",[wxInterface shareInstance].lastOrderId];
-            NSString* functionCall = [[NSString alloc] initWithFormat:@"PayBZ.notifyPayRes(%@)",aimStr];
-            NSLog(@"%@",functionCall);
-            se::ScriptEngine::getInstance()->evalString([functionCall cStringUsingEncoding:NSUTF8StringEncoding], NULL);
         }
-            break;
+           break;
+        case WXErrCodeUserCancel:
+        {
+             resCode = 2;
+             strMsg = [NSString stringWithFormat:@"支付取消！retcode = %d, retstr = %@", response.errCode,response.errStr];
+        }
+        break;
         default:
             strMsg = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", response.errCode,response.errStr];
             NSLog(@"错误，retcode = %d, retstr = %@", response.errCode,response.errStr);
             break;
     }
+
+    NSString* functionCall = [[NSString alloc] initWithFormat:@"cuckoo.WxInterFace.payRes(%d)", resCode];
+    NSLog(@"%@",functionCall);
+    se::ScriptEngine::getInstance()->evalString([functionCall cStringUsingEncoding:NSUTF8StringEncoding]);
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
     [alert release];
