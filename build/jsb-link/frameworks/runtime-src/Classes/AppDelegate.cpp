@@ -85,3 +85,5 @@ void AppDelegate::applicationWillEnterForeground()
 {
     EventDispatcher::dispatchEnterForegroundEvent();
 }
+
+

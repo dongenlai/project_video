@@ -34,6 +34,7 @@
 #import "WXApiManager.h"
 #import "WXApi.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import "AlipayInterface.h"
 
 using namespace cocos2d;
 
@@ -110,13 +111,12 @@ Application* app = nullptr;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    
     if ([url.host isEqualToString:@"safepay"]) {
         //跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            NSLog(@"result+++ = %@",resultDic);
+            [[AlipayInterface alipayInterface] payRes:_viewController recDic:resultDic];
         }];
-        return true;
+        return YES;
     }else{
         return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
     }
@@ -128,10 +128,14 @@ Application* app = nullptr;
     if ([url.host isEqualToString:@"safepay"]) {
         //跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            NSLog(@"result = %@",resultDic);
+//            [[AlipayInterface alipayInterface] payRes:resultDic];
+            
+               [[AlipayInterface alipayInterface] payRes:_viewController recDic:resultDic];
         }];
+        return YES;
+    }else{
+        return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
     }
-    return YES;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray<id<UIUserActivityRestoring>> * __nullable restorableObjects))restorationHandler {

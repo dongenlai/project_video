@@ -6,37 +6,63 @@
 #import <UIKit/UIKit.h>
 #import <AlipaySDK/AlipaySDK.h>
 #import "ZQStatusBarTool.h"
-#import "AlipaySdk/APOrderInfo.h"
-#import"AlipaySdk/Utils/APRSASigner.h"
 
 
 @implementation AlipayInterface
 
+//支付宝单例
+static AlipayInterface* _instance = nil;
++ (instancetype) alipayInterface
+{
+    static dispatch_once_t onceToken ;
+    dispatch_once(&onceToken, ^{
+        _instance = [[AlipayInterface alloc] init] ;
+    }) ;
+    return _instance ;
+}
+
 //支付宝支付
 + (BOOL)doOrder: (NSString *) codeInfo;
 {
-//    codeInfo = [codeInfo substringFromIndex:11];
-    NSString *appScheme = @"cuckoo_alipay";
-    [[AlipaySDK defaultService] payOrder:codeInfo fromScheme:appScheme callback:^(NSDictionary *resultDic) {
-        NSLog(@"reslut 1= %@",resultDic);
-    }];
+    NSString *appScheme = @"cuckooAlipay";
+    [[AlipaySDK defaultService] payOrder:codeInfo dynamicLaunch:true fromScheme:appScheme callback:NULL];
     return true;
 }
 
-+ (NSString *)generateTradeNO
+- (BOOL)payRes: (UIViewController *)view recDic: (NSDictionary *)recDic;
 {
-    static int kNumber = 15;
-    NSString *sourceStr = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    NSMutableString *resultStr = [[NSMutableString alloc] init];
-    srand((unsigned)time(0));
-    for (int i = 0; i < kNumber; i++)
-    {
-        unsigned index = rand() % [sourceStr length];
-        NSString *oneStr = [sourceStr substringWithRange:NSMakeRange(index, 1)];
-        [resultStr appendString:oneStr];
-    }
-    return resultStr;
+    NSLog(@"支付宝支付结果回调 %@", recDic);
+    NSString *resCode = [recDic objectForKey:@"resultStatus"];
+    
+//    UIViewController * rootViewController = [AlipayInterface getCurrentVC];
+//    if(rootViewController){
+        [view aliPayResNotify:resCode];
+//    }
+
+    return true;
 }
 
++(UIViewController *)getCurrentVC
+{
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *currentVC = [self getCurrentVCFrom:rootViewController];
+    return currentVC;
+}
+
++(UIViewController *)getCurrentVCFrom:(UIViewController *)rootVC
+{
+    UIViewController *currentVC;
+    if ([rootVC presentedViewController]) {
+        rootVC = [rootVC presentedViewController];
+    }
+    if ([rootVC isKindOfClass:[UITabBarController class]]) {
+        currentVC = [self getCurrentVCFrom:[(UITabBarController *)rootVC selectedViewController]];
+    } else if ([rootVC isKindOfClass:[UINavigationController class]]){
+        currentVC = [self getCurrentVCFrom:[(UINavigationController *)rootVC visibleViewController]];
+    } else {
+        currentVC = rootVC;
+    }
+    return currentVC;
+}
 
 @end

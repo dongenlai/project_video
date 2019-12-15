@@ -97,6 +97,14 @@ return self;
     // Release any cached data, images, etc that aren't in use.
 }
 
+
+- (void) aliPayResNotify:(NSString *)resCode {
+    if(resCode){
+        NSString* functionCall = [[NSString alloc] initWithFormat:@"cuckoo.AlipayInterface.payResNotify(%@)",resCode];
+        se::ScriptEngine::getInstance()->evalString([functionCall cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+}
+
 #pragma mark - WXApiManagerDelegate
 - (void)managerDidRecvGetMessageReq:(GetMessageFromWXReq *)req {
     // 微信请求App提供内容， 需要app提供内容后使用sendRsp返回

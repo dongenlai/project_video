@@ -30,5 +30,6 @@
 @interface RootViewController : UIViewController {
 
 }
+- (void) aliPayResNotify:(NSString *)resCode;
 - (BOOL)prefersStatusBarHidden;
 @end
