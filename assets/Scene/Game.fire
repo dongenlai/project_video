@@ -3740,6 +3740,9 @@
     "recordPrefab": {
       "__uuid__": "66377307-e143-4e8d-b017-fa6747a9a23e"
     },
+    "chapterPrefab": {
+      "__uuid__": "4e78df10-c271-40ca-974f-779684786de9"
+    },
     "_id": "950S2/L45Co5FY0Z3WgQgM"
   }
 ]

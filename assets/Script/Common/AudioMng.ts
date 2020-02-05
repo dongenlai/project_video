@@ -2,6 +2,7 @@ const {ccclass, property} = cc._decorator;
 /*
    音乐/音效组件
 */
+
 @ccclass
 export default class AudioMng extends cc.Component {
     //背景音乐

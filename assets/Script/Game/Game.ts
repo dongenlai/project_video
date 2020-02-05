@@ -14,6 +14,11 @@ export default class Game extends BaseNode {
     @property(cc.Prefab)
     recordPrefab:cc.Prefab = null;
     recordLayer:cc.Node = null;
+    //章节层
+    @property(cc.Prefab)
+    chapterPrefab:cc.Prefab = null;
+    chapterLayer:cc.Node = null;
+
     //玩家名字节点
     userName:cc.Label = null;
     rescue_progress:cc.ProgressBar = null;
@@ -28,6 +33,11 @@ export default class Game extends BaseNode {
        let recordPrefab = cc.instantiate(this.recordPrefab);
        recordPrefab.parent = this.node;
        this.recordLayer = recordPrefab;
+       //章节预制节点
+       let chapterPrefab = cc.instantiate(this.chapterPrefab);
+       chapterPrefab.parent = this.node;
+       this.chapterLayer = chapterPrefab;
+
        //大厅背景
        const gameBg = cc.find("bg", this.node);
        const leftNode = cc.find("leftNode", this.node);
@@ -45,7 +55,8 @@ export default class Game extends BaseNode {
 
     //章节入口
     public onChapter():void{
-        this.showToast("章节功能敬请期待！", 5);
+        // this.showToast("章节功能敬请期待！", 5);
+        this.chapterLayer.active = true
     }
 
     //解锁章节
