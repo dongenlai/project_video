@@ -1,6 +1,6 @@
 {
   "ver": "2.3.1",
-  "uuid": "7aa03b90-e553-419e-ac9d-c8e6dc0aea32",
+  "uuid": "976d1fce-f75e-4d80-80ab-cfccb20cf5c1",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -9,7 +9,7 @@
   "subMetas": {
     "chapter_xu_logo": {
       "ver": "1.0.4",
-      "uuid": "8fc7a88d-0f2f-4c4e-a717-fd21604591ee",
+      "uuid": "88fb829f-ee30-4cb1-b5df-852e040f5b50",
       "rawTextureUuid": "7aa03b90-e553-419e-ac9d-c8e6dc0aea32",
       "trimType": "auto",
       "trimThreshold": 1,

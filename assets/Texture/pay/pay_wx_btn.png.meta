@@ -1,6 +1,6 @@
 {
   "ver": "2.3.1",
-  "uuid": "6c9466c1-f708-489f-8650-17c9a700ed3a",
+  "uuid": "8acbafcd-ecf3-4b4e-8562-9a3154460ec7",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -9,7 +9,7 @@
   "subMetas": {
     "pay_wx_btn": {
       "ver": "1.0.4",
-      "uuid": "98269ffe-9337-48b5-b9e1-8c056ef57bdd",
+      "uuid": "940881d9-58be-44b9-889a-471648aaf5fd",
       "rawTextureUuid": "6c9466c1-f708-489f-8650-17c9a700ed3a",
       "trimType": "auto",
       "trimThreshold": 1,

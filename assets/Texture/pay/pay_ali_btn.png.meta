@@ -1,6 +1,6 @@
 {
   "ver": "2.3.1",
-  "uuid": "ea3076ae-aa50-4ee7-a0f5-24c06593489d",
+  "uuid": "eb6ab96a-b8a5-41f1-a8b2-7a3398bd5daf",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -9,7 +9,7 @@
   "subMetas": {
     "pay_ali_btn": {
       "ver": "1.0.4",
-      "uuid": "c0e925ac-d61d-46a4-8068-f55a01c2c57a",
+      "uuid": "6ee12a5d-5d1f-41b5-be5a-8b6fade6f08e",
       "rawTextureUuid": "ea3076ae-aa50-4ee7-a0f5-24c06593489d",
       "trimType": "auto",
       "trimThreshold": 1,
